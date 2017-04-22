@@ -8,12 +8,15 @@ struct Thread{
 
 struct Process{
 	struct Thread threads[3];
+	int id;
 	int total_threads;
 	int status; //ejecutando, bloqueado
 	int remaining_time; //para hacer el SPN
 };
 
-void createProcesses(int p, int c, int type_t);
+struct Process processes[10];
+
+struct Process verifyProcesses(int p, int c, int type_t);
 
 int main(void){
 	int c;
@@ -51,12 +54,16 @@ int main(void){
 					int p = (int)getc(file)-'0'; //nro del proceso
 					int t = (int)getc(file)-'0'; //nro del hilo
 					int type_t = (int)getc(file)-'0'; //si es ult o klt
-					createProcesses(p,t, type_t);
+					processes[p] = verifyProcesses(p,t, type_t);
 				}
 			}
 
 		}
 		fclose(file);
+			
+			for(int i = 0 ; i < 3 ; i++){
+				printf("id: %d\n",processes[i].id);
+			}
 	}
 
 	printf("\ngeneralAlgorithm: %d \n", generalAlgorithm);
@@ -66,16 +73,30 @@ int main(void){
 
 }
 
+/*
+** Crea el proceso si no estaba y agrega el hilo
+** Si estaba, agrega el hilo correspondiente
+*/
+struct Process verifyProcesses(int p, int t, int type_t){
 
-void createProcesses(int p, int t, int type_t){
+	struct Process p_aux = processes[p];
+	p_aux.id = p;
+
 	char* type = "";
 	if(type_t == 0)
 		type = "ULT";
 	else
 		type = "KLT";
 
+	struct Thread thread;
+	thread.type = type_t;
+
+	p_aux.threads[t] = thread;
+
 	printf("Tomo el proceso %d, hilo %d %s \n", p, t, type);
 	//processes[number].status = 1;
+
+	return p_aux;
 }
 
 
