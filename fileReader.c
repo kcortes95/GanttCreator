@@ -16,7 +16,7 @@ struct Process{
 
 struct Process processes[10];
 
-struct Process verifyProcesses(int p, int c, int type_t);
+struct Process updateProcesses(int p, int c, int type_t);
 
 int main(void){
 	int c;
@@ -54,19 +54,16 @@ int main(void){
 					int p = (int)getc(file)-'0'; //nro del proceso
 					int t = (int)getc(file)-'0'; //nro del hilo
 					int type_t = (int)getc(file)-'0'; //si es ult o klt
-					processes[p] = verifyProcesses(p,t, type_t);
+					processes[p] = updateProcesses(p,t, type_t);
 				}
 			}
 
 		}
 		fclose(file);
 			
-			for(int i = 0 ; i < 3 ; i++){
+			for(int i = 0 ; i < total_processes ; i++){
 				printf("id: %d\n",processes[i].id);
 			}
-
-			int type_thread = processes[0].threads[0].type;
-			printf("TIPO: %d\n",type_thread);
 
 	}
 
@@ -81,7 +78,7 @@ int main(void){
 ** Crea el proceso si no estaba y agrega el hilo
 ** Si estaba, agrega el hilo correspondiente
 */
-struct Process verifyProcesses(int p, int t, int type_t){
+struct Process updateProcesses(int p, int t, int type_t){
 
 	struct Process p_aux = processes[p];
 	p_aux.id = p;
