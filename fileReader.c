@@ -2,8 +2,8 @@
 
 struct Thread{
 	int type; //0 ULT ó 1 KLT //By default, 0
+	int arrival_time;
 	int cpu_io[12];
-	int max_cpu_io;
 };
 
 struct Process{
@@ -64,6 +64,10 @@ int main(void){
 			for(int i = 0 ; i < 3 ; i++){
 				printf("id: %d\n",processes[i].id);
 			}
+
+			int type_thread = processes[0].threads[0].type;
+			printf("TIPO: %d\n",type_thread);
+
 	}
 
 	printf("\ngeneralAlgorithm: %d \n", generalAlgorithm);
