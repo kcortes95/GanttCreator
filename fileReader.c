@@ -16,7 +16,8 @@ struct Process{
 
 struct Process processes[10];
 
-struct Process updateProcesses(int p, int c, int type_t);
+struct Process updateProcesses(int p, int t, int type_t, FILE* file);
+struct Thread fill_cpu_io_time(FILE* file, struct Thread t);
 
 int main(void){
 	int c;
@@ -54,7 +55,7 @@ int main(void){
 					int p = (int)getc(file)-'0'; //nro del proceso
 					int t = (int)getc(file)-'0'; //nro del hilo
 					int type_t = (int)getc(file)-'0'; //si es ult o klt
-					processes[p] = updateProcesses(p,t, type_t);
+					processes[p] = updateProcesses(p,t, type_t, file);
 				}
 			}
 
@@ -78,7 +79,7 @@ int main(void){
 ** Crea el proceso si no estaba y agrega el hilo
 ** Si estaba, agrega el hilo correspondiente
 */
-struct Process updateProcesses(int p, int t, int type_t){
+struct Process updateProcesses(int p, int t, int type_t, FILE* file){
 
 	struct Process p_aux = processes[p];
 	p_aux.id = p;
@@ -91,13 +92,30 @@ struct Process updateProcesses(int p, int t, int type_t){
 
 	struct Thread thread;
 	thread.type = type_t;
-
+	thread = fill_cpu_io_time(file, thread);
 	p_aux.threads[t] = thread;
 
 	printf("Tomo el proceso %d, hilo %d %s \n", p, t, type);
-	//processes[number].status = 1;
 
 	return p_aux;
 }
 
+struct Thread fill_cpu_io_time(FILE* file, struct Thread t){
+		int c;
+		c = getc(file);
+		struct Thread t_aux = t;
+		t_aux.arrival_time = (int) (getc(file) - '0');
+		printf("Tiempo de arrivo: %d\n",t_aux.arrival_time);		
+		
+		/*
+		int counter = 0;
+		while( (c = getc(file)) != '\n' ){
+			t_aux.cpu_io[counter] = c-'0';
+			printf("valor: %d\n", (int)c-'0');
+			counter++;
+		}
+		*/
+
+		return t_aux;
+}
 
