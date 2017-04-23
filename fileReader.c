@@ -1,4 +1,12 @@
 #include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+#define MAX_PROC 10
+#define MAX_THREAD 3
+#define EXTRA_LINES_TXT 4
+#define MAX_COLS 15
+#define MAX_CHAR_PER_LINE 256
 
 struct Thread{
 	int type; //0 ULT ó 1 KLT //By default, 0
@@ -14,108 +22,84 @@ struct Process{
 	int remaining_time; //para hacer el SPN
 };
 
-struct Process processes[10];
-
-struct Process updateProcesses(int p, int t, int type_t, FILE* file);
-struct Thread fill_cpu_io_time(FILE* file, struct Thread t);
+void read_by_line(char* all[], char* path);
+int string_parser(char* storiginal, int to_ret[]);
+int string_to_int(char* string);
 
 int main(void){
 	int c;
-	FILE *file;
-	file = fopen("sample.txt", "r");
-	
-	int line = 0;
+	char* file_path = "sample.txt";
 
-	int generalAlgorithm = 0;
-	int ultAlgorithm = 0; 	
-	int cores = 0;
-	int total_processes = 0;
+	// generalAlgorithm 0
+	// ultAlgorithm 1 	
+	// cores 2
+	// total_processes 3
+	int numbers_by_user[EXTRA_LINES_TXT];
 
-	if (file) {
-		while ((c = getc(file)) != EOF){
+	char* strings[MAX_PROC * MAX_THREAD + EXTRA_LINES_TXT];
+	read_by_line(strings, file_path);
 
-			if(c=='\n')
-				line++;
-
-			//se queda siempre con el ultimo numero que encuentra en el archivo
-			if(line==0)
-				generalAlgorithm = c - '0';
-
-			if(line==1)
-				ultAlgorithm = c - '0';			
-
-			if(line==2)
-				cores = c - '0';
-
-			if(line==3)
-				total_processes = c - '0'; //max: 10
-
-			if(line != 0 && line != 1 && line != 2 && line != 3){
-				if(c=='P'){
-					int p = (int)getc(file)-'0'; //nro del proceso
-					int t = (int)getc(file)-'0'; //nro del hilo
-					int type_t = (int)getc(file)-'0'; //si es ult o klt
-					processes[p] = updateProcesses(p,t, type_t, file);
-				}
-			}
-
-		}
-		fclose(file);
-			
-			for(int i = 0 ; i < total_processes ; i++){
-				printf("id: %d\n",processes[i].id);
-			}
-
+	for(int i = 0 ; i < EXTRA_LINES_TXT ; i++){
+		numbers_by_user[i] = string_to_int(strings[i]);
+		printf("%d\n",numbers_by_user[i]);
 	}
 
-	printf("\ngeneralAlgorithm: %d \n", generalAlgorithm);
-	printf("ultAlgorithm: %d \n", ultAlgorithm);
-	printf("cores: %d\n",cores);
-	printf("Total processes: %d\n",total_processes);
-
-}
-
-/*
-** Crea el proceso si no estaba y agrega el hilo
-** Si estaba, agrega el hilo correspondiente
-*/
-struct Process updateProcesses(int p, int t, int type_t, FILE* file){
-
-	struct Process p_aux = processes[p];
-	p_aux.id = p;
-
-	char* type = "";
-	if(type_t == 0)
-		type = "ULT";
-	else
-		type = "KLT";
-
-	struct Thread thread;
-	thread.type = type_t;
-	thread = fill_cpu_io_time(file, thread);
-	p_aux.threads[t] = thread;
-
-	printf("Tomo el proceso %d, hilo %d %s \n", p, t, type);
-
-	return p_aux;
-}
-
-struct Thread fill_cpu_io_time(FILE* file, struct Thread t){
-		int c;
-		c = getc(file);
-		struct Thread t_aux = t;
-		t_aux.arrival_time = (int) (getc(file) - '0');
-		printf("Tiempo de arrivo: %d\n",t_aux.arrival_time);		
-		
-		/*
-		int counter = 0;
-		while( (c = getc(file)) != '\n' ){
-			t_aux.cpu_io[counter] = c-'0';
-			printf("valor: %d\n", (int)c-'0');
-			counter++;
+	//el 11 esta hardcodeado
+	for(int i = EXTRA_LINES_TXT; i < 11 ; i++){
+		int values[MAX_COLS];
+		string_parser(strings[i],values);
+		for(int j = 0 ; j < MAX_COLS ; j++){
+			printf("%d-",values[j]);
 		}
-		*/
+		printf("\n");
+	}
 
-		return t_aux;
+	
 }
 
+void read_by_line(char* all[], char* path)
+{
+	FILE *stream;
+	char *line = NULL;
+	size_t len = 0;
+	ssize_t read;
+	//char* all[30]; 
+
+	stream = fopen(path, "r");
+	if (stream == NULL)
+		exit(EXIT_FAILURE);
+ 
+	int counter=0;
+	while ((read = getline(&line, &len, stream)) != -1) {
+		all[counter] = malloc(read*sizeof(char));		
+		strcpy(all[counter],line);
+		counter++;	
+	}
+ 
+	free(line);
+	fclose(stream);
+	return;
+}
+
+int string_to_int(char* string)
+{
+	 return atoi(string);
+}
+
+//devuelve la cantidad de columnas
+int string_parser(char* storiginal, int to_ret[])
+{
+	char st[MAX_CHAR_PER_LINE];
+	strcpy(st,storiginal);	
+
+	char *ch;
+	ch = strtok(st, " ");
+	int counter = 0;
+
+	while (ch != NULL) {
+		to_ret[counter] = string_to_int(ch);
+		counter++;		
+		ch = strtok(NULL, " ");
+	}
+	return counter;
+}
