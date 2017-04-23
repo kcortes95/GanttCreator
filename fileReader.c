@@ -4,7 +4,7 @@
 
 #define MAX_PROS 10
 #define MAX_THREAD 3
-#define EXTRA_UPPER_LINES_TXT 4
+#define EXTRA_UPPER_LINES_TXT 5
 #define MAX_COLS 15
 #define MAX_CHAR_PER_LINE 256
 #define NUMBER_OF_COL_START_CPU_IO 5
@@ -26,15 +26,20 @@ struct Process{
 	int designated_core;
 };
 
+struct Process processes[MAX_PROS];
+
+void upload_from_file(char* file_path);
 void read_by_line(char* all[], char* path);
 int string_parser(char* storiginal, int to_ret[]);
 int string_to_int(char* string);
 
-struct Process processes[MAX_PROS];
-
 int main(void){
+	upload_from_file("sample.txt");
+}
+
+void upload_from_file(char* file_path){
 	int c;
-	char* file_path = "sample.txt";
+	//char* file_path = "sample.txt";
 
 	// generalAlgorithm 0
 	// ultAlgorithm 1 	
@@ -51,7 +56,7 @@ int main(void){
 	}
 
 	//el 11 esta hardcodeado
-	for(int i = EXTRA_UPPER_LINES_TXT; i < 11 ; i++){
+	for(int i = EXTRA_UPPER_LINES_TXT; i < numbers_by_user[4] + EXTRA_UPPER_LINES_TXT; i++){
 		int values[MAX_COLS];
 		string_parser(strings[i],values);
 		
