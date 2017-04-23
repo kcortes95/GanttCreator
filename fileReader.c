@@ -48,8 +48,8 @@ int main(void){
 	for(int i = EXTRA_LINES_TXT; i < 11 ; i++){
 		int values[MAX_COLS];
 		string_parser(strings[i],values);
-		for(int j = 0 ; j < MAX_COLS ; j++){
-			printf("%d-",values[j]);
+		for(int j = 0 ; j < 4 + values[3] ; j++){
+			printf("%d ",values[j]);
 		}
 		printf("\n");
 	}
