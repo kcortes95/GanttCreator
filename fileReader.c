@@ -1,7 +1,11 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+//#include "thread.c"
+//#include "process.c"
+#include "macros.c"
 
+/*
 #define MAX_PROS 10
 #define MAX_THREAD 3
 #define EXTRA_UPPER_LINES_TXT 5
@@ -27,15 +31,18 @@ struct Process{
 };
 
 struct Process processes[MAX_PROS];
+*/
 
 void upload_from_file(char* file_path);
 void read_by_line(char* all[], char* path);
 int string_parser(char* storiginal, int to_ret[]);
 int string_to_int(char* string);
 
+/*
 int main(void){
 	upload_from_file("sample.txt");
 }
+*/
 
 void upload_from_file(char* file_path){
 	int c;

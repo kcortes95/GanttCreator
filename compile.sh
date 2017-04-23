@@ -1,3 +1,3 @@
 clear
-gcc -o fileReader fileReader.c
-./fileReader
+gcc -o run run.c
+./run
