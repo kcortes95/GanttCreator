@@ -18,7 +18,7 @@ public class Main {
         //Third create TaskManager, assign resources and pass all processes.
         TaskManager mng = new TaskManager();
 
-        //Fourth, start clock iterations antil TaskManager signals halt
+        //Fourth, start clock iterations until TaskManager signals halt
         Boolean finished = false;
         while (!finished) {
             try {TimeUnit.SECONDS.sleep(1);} catch (Exception e){System.out.println("Error on timed sleep");}
