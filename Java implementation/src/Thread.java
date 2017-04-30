@@ -1,12 +1,15 @@
+import java.util.Collection;
+import java.util.Stack;
 
 public class Thread {
 
     /**
      * Manejamos Jobs como una pila a la cual le devolvemos las tareas si no estan terminadas
      */
-    private Collection<Job> jobs;
+    private Stack<Job> jobs;
 
-    public Process() {
+
+    public Thread(Stack<Job> jobs) {
         this.jobs = jobs;
     }
 
@@ -15,7 +18,7 @@ public class Thread {
     }
 
     public void insert(Job job) {
-        jobs.push(job)
+        jobs.push(job);
     }
 
 }

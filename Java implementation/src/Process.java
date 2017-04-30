@@ -4,9 +4,9 @@ public class Process {
     private Integer id;
     private Integer arrivalTime;
     private Core designatedCore;
-    private Library library;
+    private ThreadLibrary library;
 
-    public Process(Integer id, Integer arrivalTime, Library library) {
+    public Process(Integer id, Integer arrivalTime, ThreadLibrary library) {
         this.id = id;
         this.arrivalTime = arrivalTime;
         this.designatedCore = null;
@@ -37,11 +37,11 @@ public class Process {
         this.designatedCore = designatedCore;
     }
 
-    public Library getLibrary() {
+    public ThreadLibrary getLibrary() {
         return library;
     }
 
-    public void setLibrary(Library library) {
+    public void setLibrary(ThreadLibrary library) {
         this.library = library;
     }
 

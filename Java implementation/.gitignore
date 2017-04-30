@@ -1,5 +1,7 @@
 /bin/
 
+.idea
+GanttCreator.iml
 # Compiled class file
 *.class
 

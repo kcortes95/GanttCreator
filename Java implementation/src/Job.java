@@ -1,15 +1,19 @@
 
 public class Job {
 
-    private JobType type;
+    private Type type;
     private Integer clock;
 
-    public JobType getType() {
+    public Type getType() {
         return type;
     }
 
     public Integer getClock() {
         return clock;
+    }
+
+    public enum Type {
+        IO, CPU;
     }
 
 }
