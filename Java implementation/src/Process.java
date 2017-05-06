@@ -1,10 +1,18 @@
+import java.util.HashMap;
 
 public class Process {
 
     private Integer id;
     private Integer arrivalTime;
     private Core designatedCore;
+    //Si, la libreria es el que maneja los algoritmos, esta bien...
+    //Faltaria agregar los hilos que componen al proceso! (lo agrego mas abajo)
     private ThreadLibrary library;
+    
+    /**
+     * Esto deberia ser algo asi...
+     */
+    private HashMap<Integer, Thread> threads = new HashMap<>();
 
     public Process(Integer id, Integer arrivalTime, ThreadLibrary library) {
         this.id = id;

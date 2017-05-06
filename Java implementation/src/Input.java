@@ -1,6 +1,9 @@
 import java.io.File;
+import java.util.HashMap;
 import java.util.Scanner;
+import java.util.Stack;
 
+import javax.management.RuntimeErrorException;
 
 public class Input {
 	
@@ -14,6 +17,7 @@ public class Input {
     	values[4] -> totalThreads = 0; //puede que no sea necesario
 		*/
     	Integer[] values = new Integer[5];
+    	HashMap<Integer, Process> auxProcess = new HashMap<>();
     	
         try {
             
@@ -28,7 +32,7 @@ public class Input {
             	if(lineCounter >= 1 && lineCounter <= 5){
             		values[lineCounter - 1] = lineParser(line);
             	}else{
-            		//System.out.println("Leo la linea completa");
+            		lineParser(line, auxProcess);
             	}
             	
             	lineCounter++;
@@ -43,6 +47,59 @@ public class Input {
     
     private static int lineParser(String line){
     	return Integer.parseInt(line);
+    }
+    
+    private static void lineParser(String line, HashMap<Integer, Process> auxProcess ){
+    	String[] splittedLine = line.split(" ");
+    	int nro_proc = Integer.parseInt(splittedLine[0]);
+    	int nro_hilo = Integer.parseInt(splittedLine[1]);
+    	int ult_o_klt = Integer.parseInt(splittedLine[2]);
+    	int tot_cols = Integer.parseInt(splittedLine[3]);
+    	int arrival_time = Integer.parseInt(splittedLine[4]);
+    	
+    	Integer[] cpu_io = new Integer[tot_cols - 1];
+    	
+    	Stack<Job> jobs = new Stack<>();
+    	   	
+    	for(int i = 5; i < 5 + tot_cols - 1; i++){
+    		// (i-5) % 2 entonces es ULT, sino es KLT.
+    		//Esto quiere decir que, en el pensarlo como el array de splittedLine, en las
+    		//posiciones pares tendriamos los valores de CPU y en las impares los valores de IO
+    		Job j = new Job((i-5)%2, Integer.parseInt(splittedLine[i]));
+    		jobs.push(j);
+    	}
+    	
+    	Thread t = new Thread(ult_o_klt, jobs);
+    	
+    	if(auxProcess.containsKey(nro_proc)){
+    		/**
+    		 * Esto esta mal, no deberia tener que agregarle la logica del THREAD LIBRARY ACA
+    		 */
+    		
+    		/*
+    		ThreadLibrary library = new ThreadLibrary() {
+				
+				@Override
+				public void addThread(Thread thread) {
+					// TODO Auto-generated method stub
+					
+				}
+			};
+			*/
+    		Process proc = new Process(nro_proc, arrival_time, null);
+    		auxProcess.put(nro_proc, proc);
+    	}else{
+    		  		
+    		Process proc = auxProcess.get(nro_proc);
+    		
+    		if(arrival_time != proc.getArrivalTime()){
+    			Error e = new Error("Ha ocurrido un error en la lectura del archivo. Incompatibilidad de tiempos al arribar el proceso " + nro_proc);
+    			throw new RuntimeErrorException(e);
+    		}
+    		
+    		proc.addThread(t);
+    	}
+    	
     }
 
 }
