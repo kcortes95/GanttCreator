@@ -10,11 +10,12 @@ public class Input {
     public static void fileReader(String filepath) {
     	
     	/*
-    	values[0] -> processAlg = 0;
-    	values[1] -> ultAlg = 0;
-    	values[2] -> noCores = 1; //1 by default
-    	values[3] -> noProcess = 0;
-    	values[4] -> totalThreads = 0; //puede que no sea necesario
+    	//Los valores a insertarse son los siguientes
+    	values[0] -> processAlg 
+    	values[1] -> ultAlg
+    	values[2] -> noCores
+    	values[3] -> noProcess
+    	values[4] -> totalThreads //puede que no sea necesario
 		*/
     	Integer[] values = new Integer[5];
     	HashMap<Integer, Process> auxProcess = new HashMap<>();
@@ -54,14 +55,14 @@ public class Input {
     	int nro_proc = Integer.parseInt(splittedLine[0]);
     	int nro_hilo = Integer.parseInt(splittedLine[1]);
     	int ult_o_klt = Integer.parseInt(splittedLine[2]);
-    	int tot_cols = Integer.parseInt(splittedLine[3]);
-    	int arrival_time = Integer.parseInt(splittedLine[4]);
+    	int arrival_time = Integer.parseInt(splittedLine[3]);
+    	int tot_cols = Integer.parseInt(splittedLine[4]);
     	
     	Integer[] cpu_io = new Integer[tot_cols - 1];
     	
     	Stack<Job> jobs = new Stack<>();
     	   	
-    	for(int i = 5; i < 5 + tot_cols - 1; i++){
+    	for(int i = 5; i < 5 + tot_cols; i++){
     		// (i-5) % 2 entonces es ULT, sino es KLT.
     		//Esto quiere decir que, en el pensarlo como el array de splittedLine, en las
     		//posiciones pares tendriamos los valores de CPU y en las impares los valores de IO
@@ -72,21 +73,9 @@ public class Input {
     	Thread t = new Thread(ult_o_klt, jobs);
     	
     	if(auxProcess.containsKey(nro_proc)){
-    		/**
-    		 * Esto esta mal, no deberia tener que agregarle la logica del THREAD LIBRARY ACA
-    		 */
-    		
-    		/*
-    		ThreadLibrary library = new ThreadLibrary() {
-				
-				@Override
-				public void addThread(Thread thread) {
-					// TODO Auto-generated method stub
-					
-				}
-			};
-			*/
-    		Process proc = new Process(nro_proc, arrival_time, null);
+
+
+    		Process proc = new Process(nro_proc, arrival_time);
     		auxProcess.put(nro_proc, proc);
     	}else{
     		  		
