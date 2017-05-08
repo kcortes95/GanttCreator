@@ -73,9 +73,21 @@ public class Input {
     	Thread t = new Thread(ult_o_klt, jobs);
     	
     	if(auxProcess.containsKey(nro_proc)){
-
-
-    		Process proc = new Process(nro_proc, arrival_time);
+    		/**
+    		 * Esto esta mal, no deberia tener que agregarle la logica del THREAD LIBRARY ACA
+    		 */
+    		
+    		/*
+    		ThreadLibrary library = new ThreadLibrary() {
+				
+				@Override
+				public void addThread(Thread thread) {
+					// TODO Auto-generated method stub
+					
+				}
+			};
+			*/
+    		Process proc = new Process(nro_proc, arrival_time, null);
     		auxProcess.put(nro_proc, proc);
     	}else{
     		  		
