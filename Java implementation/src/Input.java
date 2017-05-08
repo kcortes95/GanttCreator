@@ -1,13 +1,11 @@
 import java.io.File;
-import java.util.HashMap;
-import java.util.Scanner;
-import java.util.Stack;
+import java.util.*;
 
 import javax.management.RuntimeErrorException;
 
 public class Input {
 	
-    public static void fileReader(String filepath) {
+    public static Collection<Process> fileReader(String filepath) {
     	
     	/*
     	//Los valores a insertarse son los siguientes
@@ -18,7 +16,7 @@ public class Input {
     	values[4] -> totalThreads //puede que no sea necesario
 		*/
     	Integer[] values = new Integer[5];
-    	HashMap<Integer, Process> auxProcess = new HashMap<>();
+    	HashMap<Integer, Process> processMap = new HashMap<>();
     	
         try {
             
@@ -33,7 +31,7 @@ public class Input {
             	if(lineCounter >= 1 && lineCounter <= 5){
             		values[lineCounter - 1] = lineParser(line);
             	}else{
-            		lineParser(line, auxProcess);
+            		lineParser(line, processMap);
             	}
             	
             	lineCounter++;
@@ -44,13 +42,15 @@ public class Input {
         } catch (Exception ex) {
             ex.printStackTrace();
         }
+
+        return processMap.values();
     }
     
     private static int lineParser(String line){
     	return Integer.parseInt(line);
     }
     
-    private static void lineParser(String line, HashMap<Integer, Process> auxProcess ){
+    private static void lineParser(String line, HashMap<Integer, Process> processMap ){
     	String[] splittedLine = line.split(" ");
     	int nro_proc = Integer.parseInt(splittedLine[0]);
     	int nro_hilo = Integer.parseInt(splittedLine[1]);
@@ -58,9 +58,9 @@ public class Input {
     	int arrival_time = Integer.parseInt(splittedLine[3]);
     	int tot_cols = Integer.parseInt(splittedLine[4]);
     	
-    	Integer[] cpu_io = new Integer[tot_cols - 1];
+    	Integer[] cpu_io = new Integer[tot_cols];
     	
-    	Stack<Job> jobs = new Stack<>();
+    	Stack<Job> jobs = new Stack<Job>();
     	   	
     	for(int i = 5; i < 5 + tot_cols; i++){
     		// (i-5) % 2 entonces es ULT, sino es KLT.
@@ -72,26 +72,14 @@ public class Input {
     	
     	Thread t = new Thread(ult_o_klt, jobs);
     	
-    	if(auxProcess.containsKey(nro_proc)){
-    		/**
-    		 * Esto esta mal, no deberia tener que agregarle la logica del THREAD LIBRARY ACA
-    		 */
-    		
-    		/*
-    		ThreadLibrary library = new ThreadLibrary() {
-				
-				@Override
-				public void addThread(Thread thread) {
-					// TODO Auto-generated method stub
-					
-				}
-			};
-			*/
-    		Process proc = new Process(nro_proc, arrival_time, null);
-    		auxProcess.put(nro_proc, proc);
+    	if(!processMap.containsKey(nro_proc)){
+    		ThreadLibrary lib = new FIFOThreadLibrary();
+    		lib.addThread(t);
+    		Process proc = new Process(nro_proc, arrival_time, lib);
+			processMap.put(nro_proc, proc);
     	}else{
     		  		
-    		Process proc = auxProcess.get(nro_proc);
+    		Process proc = processMap.get(nro_proc);
     		
     		if(arrival_time != proc.getArrivalTime()){
     			Error e = new Error("Ha ocurrido un error en la lectura del archivo. Incompatibilidad de tiempos al arribar el proceso " + nro_proc);

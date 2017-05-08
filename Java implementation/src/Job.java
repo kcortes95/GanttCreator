@@ -22,6 +22,10 @@ public class Job {
         return clock;
     }
 
+    public boolean decrementClock() {
+        return (this.clock--) == 0;
+    }
+
     public enum Type {
         IO, CPU;
     }

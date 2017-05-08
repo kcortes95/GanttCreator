@@ -1,3 +1,4 @@
+import java.util.List;
 import java.util.Stack;
 
 public class Thread {
@@ -5,11 +6,11 @@ public class Thread {
     /**
      * Manejamos Jobs como una pila a la cual le devolvemos las tareas si no estan terminadas
      */
-    private Stack<Job> jobs;
+    private List<Job> jobs;
     private Type type = Type.ULT; //by default is ULT
 
 
-    public Thread(int type, Stack<Job> jobs) {
+    Thread(int type, List<Job> jobs) {
         if(type == 1)
         	this.type = Type.KLT;
     	
@@ -20,12 +21,27 @@ public class Thread {
 		return type;
 	}
     
-    public Job next() {
-        return jobs.pop();
+    public Job currentJob() {
+        if (jobs.isEmpty()) return null;
+        return jobs.get(0);
+    }
+
+    public boolean isFinishedCurrentJob(){
+        if (jobs.isEmpty()) return true;
+        if (jobs.get(0).getClock() == 0) {
+            jobs.remove(0);
+            return true;
+        }
+        return false;
+    }
+
+    public boolean isFinished(){
+        isFinishedCurrentJob();
+        return jobs.isEmpty();
     }
 
     public void insert(Job job) {
-        jobs.push(job);
+        jobs.add(job);
     }
     
     public enum Type {

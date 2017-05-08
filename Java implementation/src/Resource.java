@@ -1,28 +1,28 @@
 /**
  * Created by nacho on 4/30/17.
  */
-public abstract class Resource {
+public abstract class Resource<T> {
 
     /**
      * Id of the resource
      * Example: IO 1, CPU 1, CPU 2
      */
-    private Integer id;
+    protected Integer id;
     /**
      * Type of resource
      * Example: CPU, IO
      */
-    private Job.Type type;
+    protected Job.Type type;
     /**
-     * Process currently on resources
+     * T currently on resources
      */
-    private Process process;
+    protected T obj;
     /**
      * Clock cycles the current process has been active on resource
      */
-    private Integer counter;
+    protected Integer counter;
 
-    public Resource(Integer id, Job.Type type) {
+    Resource(Integer id, Job.Type type) {
         this.id = id;
         this.type = type;
     }
@@ -40,8 +40,8 @@ public abstract class Resource {
         return type;
     }
 
-    public abstract Process finished();
+    public abstract T finished();
 
-    public abstract void assign(Process process);
+    public abstract void assign(T obj);
 
 }
