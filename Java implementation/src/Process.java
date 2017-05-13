@@ -65,7 +65,13 @@ public class Process {
     public boolean finished() {
         return (this.jobs.peek().getClock() == 0);
     }
+    
+    public Job.Type nextJobType(){
+        if (this.jobs.isEmpty()) return null;
 
+    	return jobs.peek().getType();
+    }
+    
 //    public ThreadLibrary getLibrary() {
 //        return library;
 //    }
