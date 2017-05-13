@@ -56,14 +56,18 @@ public class Process {
         this.designatedCore = designatedCore;
     }
 
-    public void update() {
-        if (this.jobs.isEmpty()) return;
-
+    public boolean update() {
+        if (this.jobs.isEmpty()) return false;
         this.jobs.peek().decrementClock();
+        return true;
     }
 
     public boolean finished() {
         return (this.jobs.peek().getClock() == 0);
+    }
+
+    public void pollJob() {
+        this.jobs.poll();
     }
     
     public Job.Type nextJobType(){
@@ -83,4 +87,9 @@ public class Process {
 //    public void addThread(Thread thread) {
 //        this.library.addThread(thread);
 //    }
+
+    @Override
+    public String toString() {
+        return "Process-id="+this.id+"-timeLeftJob="+this.jobs.peek().getClock()+this.jobs.peek().getType();
+    }
 }

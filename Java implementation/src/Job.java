@@ -18,12 +18,21 @@ public class Job {
         return clock;
     }
 
-    public boolean decrementClock() {
-        return (this.clock--) == 0;
+    public void decrementClock() {
+        this.clock -= 1;
     }
 
     public enum Type {
         IO, CPU;
+
+        @Override
+        public String toString() {
+            switch (this) {
+                case IO: return "IO";
+                case CPU: return "CPU";
+            }
+            return "";
+        }
     }
 
 }

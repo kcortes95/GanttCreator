@@ -27,7 +27,7 @@ public abstract class Resource {
     /**
      * Clock cycles the current process has been active on resource
      */
-    protected Integer counter;
+    protected Integer counter = 0;
 
     Resource(Integer id, Job.Type type) {
         this.id = id;
@@ -35,10 +35,12 @@ public abstract class Resource {
     }
 
 
-    public void update() {
+    public Boolean update() {
         this.counter++;
+        System.out.println(this.getType()+": update " + obj);
         if (this.obj != null)
-            this.obj.update();
+            return this.obj.update();
+        return false;
     }
 
     public Integer getId() {
@@ -50,15 +52,24 @@ public abstract class Resource {
     }
 
     public Process finished() {
-        if (!this.obj.finished()) return null;
+        if(this.obj != null && !this.obj.finished()) return null;
 
         Process aux = this.obj;
+        this.obj = null;
+        if (aux != null) aux.pollJob();
         if (!queue.isEmpty())
             this.obj = queue.poll();
         this.counter = 0;
         return aux;
     }
 
-    public void assign(Process obj) {this.queue.add(obj);}
+    public void assign(Process obj) {
+        if (obj == null) return;
+
+        if (this.obj == null)
+            this.obj = obj;
+        else
+            this.queue.add(obj);
+    }
 
 }

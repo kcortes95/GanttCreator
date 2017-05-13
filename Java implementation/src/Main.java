@@ -18,7 +18,8 @@ public class Main {
 		p1Jobs.add((new Job(Job.Type.IO, 3)));
 		p1Jobs.add((new Job(Job.Type.CPU, 3)));
 		p1Jobs.add((new Job(Job.Type.IO, 1)));
-		p1Jobs.add((new Job(Job.Type.CPU, 2)));
+		p1Jobs.add((new Job(Job.Type.CPU, 4)));
+
 
 		Queue<Job> p2Jobs = (new LinkedList<>());
 		p2Jobs.add((new Job(Job.Type.CPU, 3)));
@@ -27,7 +28,7 @@ public class Main {
 		p2Jobs.add((new Job(Job.Type.IO, 2)));
 		p2Jobs.add((new Job(Job.Type.CPU, 1)));
 		p2Jobs.add((new Job(Job.Type.IO, 1)));
-		p2Jobs.add((new Job(Job.Type.CPU, 1)));
+		p2Jobs.add((new Job(Job.Type.CPU, 3)));
 
 		Process p1 = new Process(1, 0, p1Jobs);
 		Process p2 = new Process(2, 3, p2Jobs);
@@ -61,14 +62,23 @@ public class Main {
 		resources.addAll(rio);
 		resources.addAll(rc);
 
-		while (clock < 100) {
+		while (!finished) {
+			finished = true;
 			System.out.println("*** TIEMPO: " + clock + " ***");
+
+			if(readyMap.containsKey(clock)){
+				for(Process proc : readyMap.get(clock)){
+					System.out.println("Entra en ready ---> " + proc);
+					cm.newProcess(proc);
+				}
+			}
+
 			//motion(1);
 			for (Resource resource : resources) {
-				resource.update();
+				if(resource.update() == true)
+					finished = false;
 				Process p = resource.finished();
-				if(p != null){
-					
+				if(p != null && p.nextJobType() != null) {
 					switch (p.nextJobType()) {
 					case CPU:
 						cm.assign(p, p.getDesignatedCore().getId());
@@ -78,17 +88,12 @@ public class Main {
 						iom.assign(p, 1);
 						break;
 					}
-					
+
 				}
-				
-				if(readyMap.containsKey(clock)){
-					for(Process proc : readyMap.get(clock)){
-						cm.newProcess(proc);
-					}
-				}
-				
+
+
 			}
-			
+
 			clock++;
 			System.out.println("*********");
 		}

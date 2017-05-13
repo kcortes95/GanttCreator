@@ -9,8 +9,8 @@ public class Core extends Resource{
     
     public Process finished() {
     	Process aux = super.finished();
-    	if (aux == null) return null;
-    	
+    	if (this.obj == null || aux == null) return aux;
+
     	Boolean condition = true;
     	while (condition) {
     		if (this.obj.getDesignatedCore() == null || this.obj.getDesignatedCore().getId() == this.getId() ) {
@@ -26,5 +26,16 @@ public class Core extends Resource{
     	
     	return aux;
     }
+
+    public void assign(Process p) {
+    	super.assign(p);
+    	if (this.queue.isEmpty()) {
+    		if (this.obj.getDesignatedCore() != null && this.obj.getDesignatedCore().getId() != this.getId())
+    			this.obj = null;
+			if (this.obj.getDesignatedCore() == null)
+				this.obj.setDesignatedCore(this);
+		}
+
+	}
 
 }
