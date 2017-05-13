@@ -93,6 +93,8 @@ public class Main {
 
 
 			}
+			cm.flush();
+			iom.flush();
 
 			clock++;
 			System.out.println("*********");
