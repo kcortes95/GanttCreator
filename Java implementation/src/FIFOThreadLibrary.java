@@ -26,5 +26,8 @@ public class FIFOThreadLibrary extends ThreadLibrary {
         return threads.isEmpty();
     }
 
-
+    @Override
+    public Thread next() {
+        return null;
+    }
 }
