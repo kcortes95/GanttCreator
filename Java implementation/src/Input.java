@@ -70,7 +70,7 @@
 //    		jobs.push(j);
 //    	}
 //
-//    	Thread t = new Thread(ult_o_klt, jobs);
+//    	Ult t = new Ult(ult_o_klt, jobs);
 //
 //    	if(!processMap.containsKey(nro_proc)){
 //    		ThreadLibrary lib = new FIFOThreadLibrary();

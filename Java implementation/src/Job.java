@@ -35,4 +35,8 @@ public class Job {
         }
     }
 
+    @Override
+    public String toString() {
+        return this.clock+this.type.toString();
+    }
 }

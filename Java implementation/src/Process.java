@@ -2,33 +2,22 @@ import java.util.*;
 
 public class Process {
 
-    private Integer id;
+    private String id;
     private Core designatedCore;
-    private PriorityQueue<Klt> klts;
-//    private Queue<Job> jobs;
+    private PriorityQueue<Klt> kltQueue;
+    private Klt klt;
     
 
-//    private HashMap<Integer, Thread> threads = new HashMap<>();
+//    private HashMap<Integer, Ult> threads = new HashMap<>();
 
-    public Process(Integer id, PriorityQueue<Klt> klts) {
+    public Process(String id, PriorityQueue<Klt> klts) {
         this.id = id;
         this.designatedCore = null;
-        this.klts = klts;
+        this.kltQueue = klts;
     }
 
-    public Process(Integer id, Integer arrivalTime, Queue<Job> jobs) {
-        this.id = id;
-        this.arrivalTime = arrivalTime;
-        this.designatedCore = null;
-        this.jobs = jobs;
-    }
-
-    public Integer getId() {
+    public String getId() {
         return id;
-    }
-
-    public Integer getArrivalTime() {
-        return arrivalTime;
     }
 
     public Core getDesignatedCore() {
@@ -39,28 +28,35 @@ public class Process {
         this.designatedCore = designatedCore;
     }
 
-    public boolean update() {
-        if (this.jobs.isEmpty()) return false;
-        this.jobs.peek().decrementClock();
-        return true;
+    public Boolean update() {
+        return this.klt.update();
     }
 
     public boolean finished() {
-        return (this.jobs.peek().getClock() == 0);
+//        return (this.jobs.peek().getClock() == 0);
+        return (this.klt == null  && this.kltQueue.isEmpty());
     }
 
-    public void pollJob() {
-        this.jobs.poll();
+    public void assign(Ult ult) {
+        String idKlt = ult.getKltId();
+        if(this.klt.getId().equals(idKlt))
+            this.klt.assign(ult);
+        else {
+            for(Klt each:this.kltQueue) {
+                if(each.getId().equals(idKlt)) {
+                    each.assign(ult);
+                    break;
+                }
+            }
+        }
     }
     
-    public Job.Type nextJobType(){
-        if (this.jobs.isEmpty()) return null;
-
-    	return jobs.peek().getType();
-    }
+//    public Job.Type nextJobType(){
+//        if (this.jobs.isEmpty()) return null;
+//
+//    	return jobs.peek().getType();
+//    }
 
     @Override
-    public String toString() {
-        return "Process-id="+this.id+"-timeLeftJob="+this.jobs.peek().getClock()+this.jobs.peek().getType();
-    }
+    public String toString() {return "Running="+this.id+"-"+this.klt;}
 }
