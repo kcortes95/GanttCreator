@@ -1,28 +1,19 @@
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Queue;
+import java.util.*;
 
 public class Process {
 
     private Integer id;
-    private Integer arrivalTime;
     private Core designatedCore;
-    //Si, la libreria es el que maneja los algoritmos, esta bien...
-    //Faltaria agregar los hilos que componen al proceso! (lo agrego mas abajo)
-    private ThreadLibrary library;
-    private Queue<Job> jobs;
+    private PriorityQueue<Klt> klts;
+//    private Queue<Job> jobs;
     
-    /**
-     * Esto deberia ser algo asi...
-     */
-    private HashMap<Integer, Thread> threads = new HashMap<>();
 
-    public Process(Integer id, Integer arrivalTime, ThreadLibrary library) {
+//    private HashMap<Integer, Thread> threads = new HashMap<>();
+
+    public Process(Integer id, PriorityQueue<Klt> klts) {
         this.id = id;
-        this.arrivalTime = arrivalTime;
         this.designatedCore = null;
-//        this.library = library;
+        this.klts = klts;
     }
 
     public Process(Integer id, Integer arrivalTime, Queue<Job> jobs) {
@@ -36,16 +27,8 @@ public class Process {
         return id;
     }
 
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
     public Integer getArrivalTime() {
         return arrivalTime;
-    }
-
-    public void setArrivalTime(Integer arrivalTime) {
-        this.arrivalTime = arrivalTime;
     }
 
     public Core getDesignatedCore() {
@@ -75,18 +58,6 @@ public class Process {
 
     	return jobs.peek().getType();
     }
-    
-//    public ThreadLibrary getLibrary() {
-//        return library;
-//    }
-//
-//    public void setLibrary(ThreadLibrary library) {
-//        this.library = library;
-//    }
-//
-//    public void addThread(Thread thread) {
-//        this.library.addThread(thread);
-//    }
 
     @Override
     public String toString() {
