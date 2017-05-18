@@ -6,7 +6,6 @@ public class Klt {
     private PriorityQueue<Ult> ultQueue;
     private Ult ult;
 
-
     public Klt(String id, PriorityQueue<Ult> klts) {
         this.id = id;
         this.ultQueue = klts;
@@ -38,4 +37,8 @@ public class Klt {
 
     @Override
     public String toString() {return this.id+"-"+this.ult;}
+    
+    public Ult getUlt() {
+		return ult;
+	}
 }

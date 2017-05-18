@@ -1,6 +1,4 @@
-import java.util.List;
 import java.util.Queue;
-import java.util.Stack;
 
 public class Ult {
 
@@ -12,8 +10,6 @@ public class Ult {
     private String id;
     private String kltId;
     private String processId;
-
-
 
     Ult(Queue<Job> jobs) {this.jobs = jobs;}
 

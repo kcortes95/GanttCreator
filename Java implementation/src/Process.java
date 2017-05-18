@@ -7,7 +7,6 @@ public class Process {
     private PriorityQueue<Klt> kltQueue;
     private Klt klt;
     
-
 //    private HashMap<Integer, Ult> threads = new HashMap<>();
 
     public Process(String id, PriorityQueue<Klt> klts) {
@@ -59,4 +58,8 @@ public class Process {
 
     @Override
     public String toString() {return "Running="+this.id+"-"+this.klt;}
+    
+    public Klt getKlt() {
+		return klt;
+	}
 }

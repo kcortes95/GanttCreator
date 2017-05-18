@@ -73,7 +73,6 @@ public class Main {
 				}
 			}
 
-			//motion(1);
 			for (Resource resource : resources) {
 				if(resource.update() == true)
 					finished = false;
@@ -103,12 +102,5 @@ public class Main {
 
 	}
 	
-	private static void motion(int time){
-		try {
-			TimeUnit.SECONDS.sleep(time);
-		} catch (Exception e) {
-			System.out.println("Error on timed sleep");
-		}
-	}
 
 }
