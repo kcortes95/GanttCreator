@@ -10,6 +10,14 @@ public class Ult {
     private String id;
     private String kltId;
     private String processId;
+    
+    /**
+     * Esta variable la voy a utilizar luego para calcular el HRRN.
+     * Con el HRRN debo llevar control de cuanto tiempo corrio el ULT.
+     * Tengo luego que en el update sumarle 1 cada vez que se hace un decrement clock 
+     * en CPU!!!
+     */
+    private Integer ranInCore = 0;
 
     Ult(Queue<Job> jobs) {this.jobs = jobs;}
 
@@ -45,8 +53,41 @@ public class Ult {
 
     public Boolean update() {
         if (this.jobs.isEmpty()) return false;
-        this.jobs.peek().decrementClock();
+        
+        Job actualJob = this.jobs.peek();
+        actualJob.decrementClock();
+        
+        if(actualJob.getType().equals(Job.Type.CPU)){
+        	ranInCore++;
+        }
+        
         return true;
     }
+    
+    public Job.Type nextJobType(){
+        if (this.jobs.isEmpty()) return null;
+
+    	return jobs.peek().getType();
+    	
+    }
+    
+    /**
+     * Calcula cuanto falta para que dicho proceso termine (contando unicamente
+     * los tiempos de CPU, no los de IO)
+     * Esto se hace para luego implementar los distintos algoritmos expulsivos
+     * y no expulsivos
+     * @return
+     */
+    public int jobsEstimator(){
+    	int counter = 0;
+    	for( Job each : jobs ){
+    		if(each.getType().equals(Job.Type.CPU)){
+    			counter += each.getClock();
+    		}
+    	}
+    	return counter;
+    }
+    
+    //MIRAR TABLA DE LOS ALGORITMOS DEL LIBRO!
 
 }

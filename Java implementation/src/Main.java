@@ -11,7 +11,7 @@ public class Main {
 
 		// First parse input or retrieve demo data created on some method in
 		// this class
-//		Collection<Process> processes = Input.fileReader("sample.txt");
+		// Collection<Process> processes = Input.fileReader("sample.txt");
 
 		Queue<Job> p1Jobs = (new LinkedList<>());
 		p1Jobs.add((new Job(Job.Type.CPU, 2)));
@@ -77,6 +77,8 @@ public class Main {
 				if(resource.update() == true)
 					finished = false;
 				Process p = resource.finished();
+				
+				/*
 				if(p != null && p.nextJobType() != null) {
 					switch (p.nextJobType()) {
 					case CPU:
@@ -88,6 +90,25 @@ public class Main {
 						break;
 					}
 
+				}
+				*/
+				
+				//tendriamos que trabajar con el nextTypeJob pero en la cola de jobs del ULT
+				if(p != null){
+					if( p.getKlt() != null && p.getKlt().getUlt() != null){
+						Ult ult = p.getKlt().getUlt();
+						if(ult.nextJobType() != null){
+							switch (ult.nextJobType()) {
+							case CPU:
+								cm.assign(p, p.getDesignatedCore().getId());
+								break;
+
+							case IO:
+								iom.assign(p, 1);
+								break;
+							}							
+						}
+					}
 				}
 
 
