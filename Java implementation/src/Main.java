@@ -1,5 +1,4 @@
 import java.util.*;
-import java.util.concurrent.TimeUnit;
 
 public class Main {
 
@@ -73,8 +72,11 @@ public class Main {
 
 					//iterar por todos los resources preguntando por ult.getProcessId()
 					newUltAssigned = false;
+					PriorityQueue<Ult> tempUltQueue = new PriorityQueue<>();
+					tempUltQueue.add(ult);
+					
 					for (Resource each: resources) {
-						if (each.assign(ult)) {
+						if (each.assign(tempUltQueue)) {
 							newUltAssigned = true;
 							break;
 						}
@@ -95,21 +97,6 @@ public class Main {
 				if(resource.update() == true)
 					finished = false;
 				Process p = resource.finished();
-				
-				/*
-				if(p != null && p.nextJobType() != null) {
-					switch (p.nextJobType()) {
-					case CPU:
-						cm.assign(p, p.getDesignatedCore().getId());
-						break;
-
-					case IO:
-						iom.assign(p, 1);
-						break;
-					}
-
-				}
-				*/
 				
 				//tendriamos que trabajar con el nextTypeJob pero en la cola de jobs del ULT
 				if(p != null){
