@@ -12,36 +12,37 @@ public class Main {
 		// this class
 		// Collection<Process> processes = Input.fileReader("sample.txt");
 
-		Queue<Job> p1Jobs = (new LinkedList<>());
-		p1Jobs.add((new Job(Job.Type.CPU, 2)));
-		p1Jobs.add((new Job(Job.Type.IO, 3)));
-		p1Jobs.add((new Job(Job.Type.CPU, 3)));
-		p1Jobs.add((new Job(Job.Type.IO, 1)));
-		p1Jobs.add((new Job(Job.Type.CPU, 4)));
-
-
-		Queue<Job> p2Jobs = (new LinkedList<>());
-		p2Jobs.add((new Job(Job.Type.CPU, 3)));
-		p2Jobs.add((new Job(Job.Type.IO, 1)));
-		p2Jobs.add((new Job(Job.Type.CPU, 1)));
-		p2Jobs.add((new Job(Job.Type.IO, 2)));
-		p2Jobs.add((new Job(Job.Type.CPU, 1)));
-		p2Jobs.add((new Job(Job.Type.IO, 1)));
-		p2Jobs.add((new Job(Job.Type.CPU, 3)));
-
-//		Process p1 = new Process(1, 0, p1Jobs);
-//		Process p2 = new Process(2, 3, p2Jobs);
-
 		Map<Integer, List<Ult>> readyMap = new HashMap<>();
+		List<Ult> ary0 = new LinkedList<>();
+		List<Ult> ary1 = new LinkedList<>();
+		List<Ult> ary2 = new LinkedList<>();
 		
-		List<Process> l1 = new LinkedList<>();
-//		l1.add(p1);
-//		readyMap.put(0,l1);
+		int[] ar1 = {3,3,5};
+		Ult u1 = new Ult(0, "1ULT", ar1, "1KLT", "1P");
+
+		int[] ar2 = {1,1,2};
+		Ult u2 = new Ult(0, "2ULT", ar2, "1KLT", "1P");
 		
-		List<Process> l2 = new LinkedList<>();
-//		l2.add(p2);
-//		readyMap.put(3,l2);
+		ary0.add(u1);
+		ary0.add(u2);
 		
+		int[] ar3 = {2,1,3,1,1};
+		Ult u3 = new Ult(1, "3ULT", ar3, "2KLT", "1P");
+		
+		int[] ar4 = {3,2,4,1,1};
+		Ult u4 = new Ult(1, "4ULT", ar4, "2KLT", "1P");
+		
+		ary1.add(u3);
+		ary1.add(u4);
+		
+		int[] ar5 = {1,1,3};
+		Ult u5 = new Ult(2, "5ULT", ar5, "3KLT", "2P");
+		
+		ary2.add(u5);
+		
+		readyMap.put(0, ary0);
+		readyMap.put(1, ary1);
+		readyMap.put(2, ary2);	
 		
 		// Second create all Resources; cpu, io, etc
 		Core core = new Core(1);

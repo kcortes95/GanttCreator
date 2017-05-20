@@ -1,3 +1,4 @@
+import java.util.LinkedList;
 import java.util.Queue;
 
 public class Ult {
@@ -19,7 +20,30 @@ public class Ult {
      */
     private Integer ranInCore = 0;
 
-    Ult(Queue<Job> jobs) {this.jobs = jobs;}
+    Ult(int arrivalTime, String id, Queue<Job> jobs, String kltId, String processId) {
+    	this.jobs = jobs;
+    	this.id = id;
+    	this.arrivalTime = arrivalTime;
+    	this.kltId = kltId;
+    	this.processId = processId;
+    }
+    
+    //Esto vuelaaaaaa!!!
+    Ult(int arrivalTime, String id, int[] jobsArray, String kltId, String processId){
+    	this.id = id;
+    	this.jobs = new LinkedList<>();
+    	for(int i = 0; i < jobsArray.length; i++){
+    		Job.Type tipo = Job.Type.CPU;
+    		if(i%2==1)
+    			tipo = Job.Type.IO;
+    		
+    		Job j = new Job(tipo, jobsArray[i]);
+    		jobs.add(j);
+    	}
+    	this.arrivalTime = arrivalTime;
+    	this.kltId = kltId;
+    	this.processId = processId;
+    }
 
     public Integer getArrivalTime() {return arrivalTime;}
 
