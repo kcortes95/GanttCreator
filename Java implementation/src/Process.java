@@ -19,7 +19,7 @@ public class Process {
 	}
 
 	public Core getDesignatedCore() {
-		return designatedCore;
+		return this.designatedCore;
 	}
 
 	public void setDesignatedCore(Core designatedCore) {

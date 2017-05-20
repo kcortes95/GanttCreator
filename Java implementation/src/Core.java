@@ -42,14 +42,24 @@ public class Core extends Resource {
 	public boolean assign(PriorityQueue<Ult> qult) {
 		boolean toret = super.assign(qult);
 
+		return toret && this.checkDesignatedCore();
+	}
+
+	public boolean assign(Process p) {
+		boolean toret = super.assign(p);
+
+		return toret && this.checkDesignatedCore();
+	}
+
+	public boolean checkDesignatedCore() {
 		if (this.queue.isEmpty() && this.obj != null) {
-			if (this.obj.getDesignatedCore() != null && this.obj.getDesignatedCore().getId() != this.getId())
+			if (this.obj.getDesignatedCore() != null && !this.obj.getDesignatedCore().getId().equals(this.getId()) ) {
 				this.obj = null;
-			if (this.obj.getDesignatedCore() == null)
+				return false;
+			} else
 				this.obj.setDesignatedCore(this);
 		}
-
-		return toret;
+		return true;
 	}
 
 }

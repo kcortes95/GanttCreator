@@ -49,16 +49,18 @@ public class Main {
 		readyMap.put(3, ary3);
 		
 		// Second create all Resources; cpu, io, etc
-		Core core = new Core(1);
+		Core core1 = new Core(1);
+		Core core2 = new Core(2);
 		IO io = new IO(1);
 		CoreManager cm = new CoreManager();
 		IOManager iom = new IOManager();
-		cm.add(1, core);
+		cm.add(1, core1);
+		cm.add(2, core2);
 		iom.add(1, io);
 		
 		// Fourth, start clock iterations until TaskManager signals halt
 		Boolean finished = false;
-		Boolean newUltAssigned = false;
+		Boolean newUltAssigned;
 		int clock = 0;
 
 		Collection<IO> rio = iom.getValues();

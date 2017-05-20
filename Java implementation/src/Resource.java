@@ -17,7 +17,7 @@ public abstract class Resource {
 
 	public Boolean update() {
 		this.counter++;
-		System.out.println(this.getType() + ": update " + obj);
+		System.out.println(this.getType() + "" + this.id + ": update " + obj);
 		if (this.obj != null)
 			return this.obj.update();
 		return false;
