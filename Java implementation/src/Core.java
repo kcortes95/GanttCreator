@@ -42,7 +42,7 @@ public class Core extends Resource {
 	public boolean assign(PriorityQueue<Ult> qult) {
 		boolean toret = super.assign(qult);
 
-		if (this.queue.isEmpty()) {
+		if (this.queue.isEmpty() && this.obj != null) {
 			if (this.obj.getDesignatedCore() != null && this.obj.getDesignatedCore().getId() != this.getId())
 				this.obj = null;
 			if (this.obj.getDesignatedCore() == null)

@@ -95,7 +95,7 @@ public class Main {
 			} //cierre de ready map
 
 			for (Resource resource : resources) {
-				if(resource.update() == true)
+				if(resource.update())
 					finished = false;
 				Process p = resource.finished();
 				

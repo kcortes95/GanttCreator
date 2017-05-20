@@ -51,7 +51,7 @@ public abstract class Resource {
 	public boolean assign(PriorityQueue<Ult> qult) {
 
 		Ult obj = qult.peek();
-		if (obj == null)
+		if (this.obj == null)
 			return false;
 
 		if (this.obj.getId().equals(obj.getProcessId())) {
