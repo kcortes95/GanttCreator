@@ -58,7 +58,7 @@ public class Ult {
         actualJob.decrementClock();
         
         if(actualJob.getType().equals(Job.Type.CPU)){
-        	ranInCore++;
+        	this.ranInCore++;
         }
         
         return true;

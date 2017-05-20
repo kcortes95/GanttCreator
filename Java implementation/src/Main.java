@@ -30,18 +30,18 @@ public class Main {
 		p2Jobs.add((new Job(Job.Type.IO, 1)));
 		p2Jobs.add((new Job(Job.Type.CPU, 3)));
 
-		Process p1 = new Process(1, 0, p1Jobs);
-		Process p2 = new Process(2, 3, p2Jobs);
+//		Process p1 = new Process(1, 0, p1Jobs);
+//		Process p2 = new Process(2, 3, p2Jobs);
 
-		Map<Integer, List<Process>> readyMap = new HashMap<>();
+		Map<Integer, List<Ult>> readyMap = new HashMap<>();
 		
 		List<Process> l1 = new LinkedList<>();
-		l1.add(p1);
-		readyMap.put(0,l1);
+//		l1.add(p1);
+//		readyMap.put(0,l1);
 		
 		List<Process> l2 = new LinkedList<>();
-		l2.add(p2);
-		readyMap.put(3,l2);
+//		l2.add(p2);
+//		readyMap.put(3,l2);
 		
 		
 		// Second create all Resources; cpu, io, etc
@@ -54,8 +54,9 @@ public class Main {
 		
 		// Fourth, start clock iterations until TaskManager signals halt
 		Boolean finished = false;
+		Boolean newUltAssigned = false;
 		int clock = 0;
-		
+
 		Collection<IO> rio = iom.getValues();
 		Collection<Core> rc = cm.getValues();
 		Collection<Resource> resources = new LinkedList<>();
@@ -67,11 +68,28 @@ public class Main {
 			System.out.println("*** TIEMPO: " + clock + " ***");
 
 			if(readyMap.containsKey(clock)){
-				for(Process proc : readyMap.get(clock)){
-					System.out.println("Entra en ready ---> " + proc);
-					cm.newProcess(proc);
+				for(Ult ult : readyMap.get(clock)){
+					System.out.println("Entra en ready ---> " + ult);
+
+					//iterar por todos los resources preguntando por ult.getProcessId()
+					newUltAssigned = false;
+					for (Resource each: resources) {
+						if (each.assign(ult)) {
+							newUltAssigned = true;
+							break;
+						}
+					}
+					if (!newUltAssigned) {
+						PriorityQueue<Klt> auxKltQueue = new PriorityQueue<>();
+						PriorityQueue<Ult> auxUltQueue = new PriorityQueue<>();
+						auxUltQueue.add(ult);
+						Klt auxKlt = new Klt(ult.getKltId(), auxUltQueue);
+						auxKltQueue.add(auxKlt);
+						Process auxProcess = new Process(ult.getProcessId(), auxKltQueue);
+						cm.newProcess(auxProcess);
+					}
 				}
-			}
+			} //cierre de ready map
 
 			for (Resource resource : resources) {
 				if(resource.update() == true)

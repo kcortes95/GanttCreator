@@ -46,13 +46,22 @@ public abstract class Resource {
         return aux;
     }
 
-    public void assign(Process obj) {
-        if (obj == null) return;
+    public boolean assign(Ult obj) {
+        if (obj == null) return false;
 
-        if (this.obj == null)
-            this.obj = obj;
-        else
-            this.queue.add(obj);
+        if (this.obj.getId().equals(obj.getProcessId())) {
+            this.obj.assign(obj);
+            return true;
+        } else {
+            for(Process proc: this.queue) {
+                if (proc.getId().equals(obj.getProcessId())) {
+                    proc.assign(obj);
+                    return true;
+                }
+            }
+        }
+        return false;
+
     }
 
 }

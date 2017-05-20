@@ -6,9 +6,10 @@ public class Klt {
     private PriorityQueue<Ult> ultQueue;
     private Ult ult;
 
-    public Klt(String id, PriorityQueue<Ult> klts) {
+    public Klt(String id, PriorityQueue<Ult> ults) {
         this.id = id;
-        this.ultQueue = klts;
+        this.ultQueue = ults;
+        this.ult = this.ultQueue.poll();
     }
 
     public String getId() {
@@ -16,6 +17,9 @@ public class Klt {
     }
 
     public Boolean update() {
+        if (this.ult == null)
+            return false;
+
         return this.ult.update();
     }
 

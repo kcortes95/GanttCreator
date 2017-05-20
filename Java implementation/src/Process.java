@@ -6,13 +6,13 @@ public class Process {
     private Core designatedCore;
     private PriorityQueue<Klt> kltQueue;
     private Klt klt;
-    
-//    private HashMap<Integer, Ult> threads = new HashMap<>();
+
 
     public Process(String id, PriorityQueue<Klt> klts) {
         this.id = id;
         this.designatedCore = null;
         this.kltQueue = klts;
+        this.klt = this.kltQueue.poll();
     }
 
     public String getId() {
@@ -28,33 +28,44 @@ public class Process {
     }
 
     public Boolean update() {
-        return this.klt.update();
+        if (this.klt == null)
+            return false;
+        else
+            return this.klt.update();
     }
 
     public boolean finished() {
-//        return (this.jobs.peek().getClock() == 0);
+
+        if (this.klt != null && this.klt.finished()) {
+            this.klt = this.kltQueue.poll();
+        }
+
         return (this.klt == null  && this.kltQueue.isEmpty());
     }
 
-    public void assign(Ult ult) {
+    public void assign(PriorityQueue<Ult> ultQ) {
+
+        Ult ult = ultQ.peek();
+
         String idKlt = ult.getKltId();
-        if(this.klt.getId().equals(idKlt))
+
+        if(this.klt.getId().equals(idKlt)) {
             this.klt.assign(ult);
-        else {
-            for(Klt each:this.kltQueue) {
-                if(each.getId().equals(idKlt)) {
-                    each.assign(ult);
-                    break;
-                }
+            return;
+        }
+
+        for(Klt each:this.kltQueue) {
+            if(each.getId().equals(idKlt)) {
+                each.assign(ult);
+                return;
             }
         }
+
+        //crear el klt, assign el ult y enconlarlo
+
     }
-    
-//    public Job.Type nextJobType(){
-//        if (this.jobs.isEmpty()) return null;
-//
-//    	return jobs.peek().getType();
-//    }
+
+
 
     @Override
     public String toString() {return "Running="+this.id+"-"+this.klt;}
