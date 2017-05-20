@@ -39,14 +39,14 @@ public class Main {
 		ary0.add(u1);
 		ary0.add(u2);
 		ary1.add(u3);
-		ary1.add(u6);
-		ary2.add(u5);
 		ary3.add(u4);
-		
+		ary2.add(u5);
+		ary1.add(u6);
+
 		readyMap.put(0, ary0);
 		readyMap.put(1, ary1);
 		readyMap.put(2, ary2);
-		readyMap.put(2, ary3);
+		readyMap.put(3, ary3);
 		
 		// Second create all Resources; cpu, io, etc
 		Core core = new Core(1);
