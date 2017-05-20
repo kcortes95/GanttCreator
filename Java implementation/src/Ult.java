@@ -68,11 +68,12 @@ public class Ult {
 //    }
 
     public boolean finished(){
-        if (this.jobs.isEmpty()) return true;
-
-        if (this.jobs.peek().getClock() == 0)
+        if (this.jobs.peek().getClock() == 0) {
             this.jobs.poll();
-        return jobs.isEmpty();
+            return true;
+        }
+
+        return false;
     }
 
     public Boolean update() {

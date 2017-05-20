@@ -37,10 +37,6 @@ public abstract class Resource {
 
 		Process aux = this.obj;
 		this.obj = null;
-		// if (aux != null) aux.pollJob(); //version solo con procesos
-		if (aux != null) {
-			aux.getKlt().getUlt();
-		}
 
 		if (!queue.isEmpty())
 			this.obj = queue.poll();

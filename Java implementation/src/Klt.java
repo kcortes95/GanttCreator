@@ -24,12 +24,17 @@ public class Klt {
     }
 
     public boolean finished() {
+        if (this.ult == null) return true;
 
         if (this.ult != null && this.ult.finished()) {
-            this.ult = this.ultQueue.poll();
+            if (this.ult.nextJobType() == null) {
+                this.ult = this.ultQueue.poll();
+                if (this.ult != null) return false;
+            }
+            return true;
         }
 
-        return (this.ult == null  && this.ultQueue.isEmpty());
+        return false;
     }
 
     public void assign(Ult ult) {
