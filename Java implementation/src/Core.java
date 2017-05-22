@@ -1,3 +1,4 @@
+import java.util.Comparator;
 import java.util.PriorityQueue;
 
 /**
@@ -5,8 +6,10 @@ import java.util.PriorityQueue;
  */
 public class Core extends Resource {
 
-	public Core(Integer id) {
+
+	public Core(Integer id, Comparator<Process> cmp) {
 		super(id, Job.Type.CPU);
+		this.queue = new PriorityQueue<Process>(10, cmp);
 	}
 
 	public Process finished() {

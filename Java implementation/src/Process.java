@@ -1,6 +1,6 @@
 import java.util.*;
 
-public class Process {
+public class Process{
 
 	private String id;
 	private Core designatedCore;
@@ -81,5 +81,5 @@ public class Process {
 	public PriorityQueue<Klt> getKltQueue() {
 		return kltQueue;
 	}
-	
+
 }

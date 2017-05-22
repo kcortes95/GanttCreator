@@ -1,13 +1,11 @@
-import java.util.LinkedList;
-import java.util.PriorityQueue;
-import java.util.Queue;
+import java.util.*;
 
 public abstract class Resource {
 
 	protected Integer id;
 	protected Job.Type type;
 	protected Process obj;
-	protected Queue<Process> queue = new LinkedList<>();
+	protected PriorityQueue<Process> queue = new PriorityQueue<>(10, Comparators.processComparator(Comparators.Type.FIFO));
 	protected Integer counter = 0;
 
 	Resource(Integer id, Job.Type type) {
@@ -32,16 +30,21 @@ public abstract class Resource {
 	}
 
 	public Process finished() {
-		if (this.obj != null && !this.obj.finished())
-			return null;
 
-		Process aux = this.obj;
-		this.obj = null;
-
-		if (!queue.isEmpty())
-			this.obj = queue.poll();
-		this.counter = 0;
-		return aux;
+		if (this.obj != null) {
+			if (this.obj.finished()) {
+				Process aux = this.obj;
+				this.obj = queue.poll();
+				this.counter = 0;
+				return aux;
+			}
+			if ( this.queue.comparator().compare(this.obj, this.queue.peek()) < 0 ) {
+				this.queue.add(this.obj);
+				this.obj = this.queue.poll();
+				return null;
+			}
+		}
+		return null;
 	}
 
 	public boolean assign(PriorityQueue<Ult> qult) {
