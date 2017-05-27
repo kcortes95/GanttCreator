@@ -4,9 +4,9 @@ public class Main {
 
 	public static void main(String[] args) {
 
-		System.out.println("*******************");
-		System.out.println("*  Gantt Creator  *");
-		System.out.println("*******************\n\n");
+		//System.out.println("*******************");
+		//System.out.println("*  Gantt Creator  *");
+		//System.out.println("*******************\n\n");
 
 		// First parse input or retrieve demo data created on some method in
 		// this class
@@ -42,7 +42,7 @@ public class Main {
 
 			if(readyMap.containsKey(clock)){
 				for(Ult ult : readyMap.get(clock)){
-					System.out.println("Entra en ready ---> " + ult);
+					//System.out.println("Entra en ready ---> " + ult);
 
 					//iterar por todos los resources preguntando por ult.getProcessId()
 					newUltAssigned = false;
@@ -96,7 +96,7 @@ public class Main {
 			iom.flush();
 
 			clock++;
-			System.out.println("*********");
+			//System.out.println("*********");
 		}
 
 

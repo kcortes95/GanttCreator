@@ -15,7 +15,7 @@ public abstract class Manager<T extends Resource> {
 	}
 
 	public void assign(Process p, int id) {
-		System.out.println("MANAGER: add proces " + p.getId() + " to " + id);
+		//System.out.println("MANAGER: add proces " + p.getId() + " to " + id);
 		if (mapTemp.containsKey(id)) {
 			mapTemp.get(id).add(p);
 		} else {

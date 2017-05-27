@@ -41,9 +41,9 @@ public class Input {
 			ex.printStackTrace();
 		}
 
-		System.out.println(algorithm_number);
-		System.out.println(algorithm_thread_lib);
-		System.out.println(tot_cores);
+		//System.out.println(algorithm_number);
+		//System.out.println(algorithm_thread_lib);
+		//System.out.println(tot_cores);
 		
 		printMap(readyMap);
 		
@@ -84,7 +84,7 @@ public class Input {
 	
 	private static void printMap(Map<Integer, List<Ult>> readyMap){
 		for(Integer each : readyMap.keySet()){
-			System.out.println(readyMap.get(each).toString());
+			//System.out.println(readyMap.get(each).toString());
 		}
 	}
 
