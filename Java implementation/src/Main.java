@@ -35,10 +35,11 @@ public class Main {
 		Collection<Resource> resources = new LinkedList<>();
 		resources.addAll(rio);
 		resources.addAll(rc);
-
+		
 		while (!finished) {
+			
 			finished = true;
-			System.out.println("*** TIEMPO: " + clock + " ***");
+			Output.getInstance().write("*** TIEMPO: " + clock + " ***");
 
 			if(readyMap.containsKey(clock)){
 				for(Ult ult : readyMap.get(clock)){
@@ -69,7 +70,8 @@ public class Main {
 
 			for (Resource resource : resources) {
 				
-				System.out.println(resource.getRunning());
+				//System.out.println(resource.getRunning());
+				Output.getInstance().write(resource.getRunning());
 				
 				if(resource.update())
 					finished = false;
@@ -102,6 +104,8 @@ public class Main {
 			clock++;
 			//System.out.println("*********");
 		}
+		
+		Output.getInstance().close();
 
 
 	}
