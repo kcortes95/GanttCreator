@@ -1,3 +1,6 @@
+import java.awt.Desktop;
+import java.io.File;
+import java.io.IOException;
 import java.util.*;
 
 public class Main {
@@ -106,8 +109,23 @@ public class Main {
 		}
 		
 		Output.getInstance().close();
+		runUI();
 
 
+	}
+	
+	public static void runUI(){
+		Runtime rTime = Runtime.getRuntime();
+		String url = "../index.html";
+		File htmlFile = new File(url);
+		
+		try {
+			Desktop.getDesktop().browse(htmlFile.toURI());
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 	}
 	
 
