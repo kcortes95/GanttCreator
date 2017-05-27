@@ -1,94 +1,91 @@
-//import java.io.File;
-//import java.util.*;
-//
-//import javax.management.RuntimeErrorException;
-//
-//public class Input {
-//
-//    public static Collection<Process> fileReader(String filepath) {
-//
-//    	/*
-//    	//Los valores a insertarse son los siguientes
-//    	values[0] -> processAlg
-//    	values[1] -> ultAlg
-//    	values[2] -> noCores
-//    	values[3] -> noProcess
-//    	values[4] -> totalThreads //puede que no sea necesario
-//		*/
-//    	Integer[] values = new Integer[5];
-//    	HashMap<Integer, Process> processMap = new HashMap<>();
-//
-//        try {
-//
-//            File file = new File(filepath);
-//            Scanner input = new Scanner(file);
-//            int lineCounter = 1;
-//
-//            while (input.hasNextLine()) {
-//
-//            	String line = input.nextLine();
-//
-//            	if(lineCounter >= 1 && lineCounter <= 5){
-//            		values[lineCounter - 1] = lineParser(line);
-//            	}else{
-//            		lineParser(line, processMap);
-//            	}
-//
-//            	lineCounter++;
-//            }
-//
-//            input.close();
-//
-//        } catch (Exception ex) {
-//            ex.printStackTrace();
-//        }
-//
-//        return processMap.values();
-//    }
-//
-//    private static int lineParser(String line){
-//    	return Integer.parseInt(line);
-//    }
-//
-//    private static void lineParser(String line, HashMap<Integer, Process> processMap ){
-//    	String[] splittedLine = line.split(" ");
-//    	int nro_proc = Integer.parseInt(splittedLine[0]);
-//    	int nro_hilo = Integer.parseInt(splittedLine[1]);
-//    	int ult_o_klt = Integer.parseInt(splittedLine[2]);
-//    	int arrival_time = Integer.parseInt(splittedLine[3]);
-//    	int tot_cols = Integer.parseInt(splittedLine[4]);
-//
-//    	Integer[] cpu_io = new Integer[tot_cols];
-//
-//    	Stack<Job> jobs = new Stack<Job>();
-//
-//    	for(int i = 5; i < 5 + tot_cols; i++){
-//    		// (i-5) % 2 entonces es ULT, sino es KLT.
-//    		//Esto quiere decir que, en el pensarlo como el array de splittedLine, en las
-//    		//posiciones pares tendriamos los valores de CPU y en las impares los valores de IO
-//    		Job j = new Job((i-5)%2, Integer.parseInt(splittedLine[i]));
-//    		jobs.push(j);
-//    	}
-//
-//    	Ult t = new Ult(ult_o_klt, jobs);
-//
-//    	if(!processMap.containsKey(nro_proc)){
-//    		ThreadLibrary lib = new FIFOThreadLibrary();
-//    		lib.addThread(t);
-//    		Process proc = new Process(nro_proc, arrival_time, lib);
-//			processMap.put(nro_proc, proc);
-//    	}else{
-//
-//    		Process proc = processMap.get(nro_proc);
-//
-//    		if(arrival_time != proc.getArrivalTime()){
-//    			Error e = new Error("Ha ocurrido un error en la lectura del archivo. Incompatibilidad de tiempos al arribar el proceso " + nro_proc);
-//    			throw new RuntimeErrorException(e);
-//    		}
-//
-//    		proc.addThread(t);
-//    	}
-//
-//    }
-//
-//}
+import java.io.File;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.Scanner;
+
+public class Input {
+
+	public Map<Integer, List<Ult>> getMap(String file_path) {
+
+		int algorithm_number = 0;
+		int algorithm_thread_lib = 0;
+		int tot_cores = 0;
+
+		Map<Integer, List<Ult>> readyMap = new HashMap<>();
+
+		try {
+			File file = new File(file_path);
+
+			Scanner input = new Scanner(file);
+			int count = 0;
+
+			while (input.hasNextLine()) {
+
+				if (count == 0)
+					algorithm_number = Integer.parseInt(input.nextLine());
+				if (count == 1)
+					algorithm_thread_lib = Integer.parseInt(input.nextLine());
+				if (count == 2)
+					tot_cores = Integer.parseInt(input.nextLine());
+				if (count >= 3)
+					parseLine(input.nextLine(), readyMap);
+				count++;
+
+			}
+
+			input.close();
+
+		} catch (Exception ex) {
+			ex.printStackTrace();
+		}
+
+		System.out.println(algorithm_number);
+		System.out.println(algorithm_thread_lib);
+		System.out.println(tot_cores);
+		
+		printMap(readyMap);
+		
+		return readyMap;
+
+	}
+
+	private static void parseLine(String line, Map<Integer, List<Ult>> readyMap) {
+		String pid = "";
+		String kltid = "";
+		String ultid = "";
+		int arr_time = 0;
+		int tot_jobs = 0;
+
+		String[] l = line.split(" ");
+		pid = l[0];
+		kltid = l[1];
+		ultid = l[2];
+		arr_time = Integer.parseInt(l[3]);
+		tot_jobs = Integer.parseInt(l[4]);
+
+		int[] jobs = new int[tot_jobs];
+		
+		for(int i = 0 ; i < tot_jobs ; i++){
+			jobs[i] = Integer.parseInt(l[i+5]);
+		}
+		
+		Ult u = new Ult(arr_time, ultid, jobs, kltid, pid);
+		
+		if(!readyMap.containsKey(arr_time)){
+			List<Ult> ults = new LinkedList<>();
+			readyMap.put(arr_time, ults);
+		}
+		
+		readyMap.get(arr_time).add(u);
+		
+	}
+	
+	private static void printMap(Map<Integer, List<Ult>> readyMap){
+		for(Integer each : readyMap.keySet()){
+			System.out.println(readyMap.get(each).toString());
+		}
+	}
+
+}
