@@ -38,13 +38,23 @@ public class Comparators {
 //        }
     }
 
+    /**
+     * En las expulsiones devuelve siempre 1 que es distinto de <=0 por ende no expulsa
+     * En las priority, siempre devuelve positivo enstonces hace fifo
+     * @return
+     */
     private static Comparator<Process> processComparatorFifo(){
         return new Comparator<Process>() {
             @Override
-            public int compare(Process o1, Process o2)  {return 0;}
+            public int compare(Process o1, Process o2)  {return 1;}
         };
     }
 
+    /**
+     * En las expulsiones devuelve siempre QUANTUM - executed time, si se llega a quantum expulsa
+     * En las priority, siempre devuelve QUANTUM - 0 que es positivo enstonces hace fifo
+     * @return
+     */
     private static Comparator<Process> processComparatorRR(Integer q){
         return new Comparator<Process>() {
             private Integer quantum = q;

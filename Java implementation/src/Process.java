@@ -47,7 +47,7 @@ public class Process{
 	public boolean finished() {
 		if (this.klt == null) return true;
 
-		if (this.klt != null && this.klt.finished()) {
+		if (this.klt.finished()) {
 			if (this.klt.getUlt() == null) {
 				this.klt = this.kltQueue.poll();
 				if (this.klt != null) return false;
