@@ -76,5 +76,28 @@ public abstract class Resource {
 
 		return true;
 	}
+	
+	public String getRunning(){
+		String pid = "NULL";
+		String kltid = "NULL";
+		String ultid = "NULL";
+		
+		if(obj!=null){
+			pid = obj.getId();
+
+			if(obj.getKlt()!=null){
+				kltid = obj.getKlt().getId();
+				
+				if(obj.getKlt().getUlt()!=null){
+					ultid = obj.getKlt().getUlt().getId();
+				}	
+				
+			}
+			
+		}
+		
+		return "PID: " + pid + " KLTID: " + kltid + " ULTID: " + ultid;
+	}
+	
 
 }

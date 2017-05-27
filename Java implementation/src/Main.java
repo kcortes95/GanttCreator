@@ -68,6 +68,9 @@ public class Main {
 			} //cierre de ready map
 
 			for (Resource resource : resources) {
+				
+				System.out.println(resource.getRunning());
+				
 				if(resource.update())
 					finished = false;
 				Process p = resource.finished();
@@ -89,9 +92,10 @@ public class Main {
 						}
 					}
 				}
-
-
+				
 			}
+			
+			
 			cm.flush();
 			iom.flush();
 
