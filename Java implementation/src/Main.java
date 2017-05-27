@@ -42,7 +42,6 @@ public class Main {
 		while (!finished) {
 			
 			finished = true;
-			Output.getInstance().write("*** TIEMPO: " + clock + " ***");
 
 			if(readyMap.containsKey(clock)){
 				for(Ult ult : readyMap.get(clock)){
@@ -70,11 +69,13 @@ public class Main {
 					}
 				}
 			} //cierre de ready map
+			
+			String toOutput = "";
 
 			for (Resource resource : resources) {
 				
-				//System.out.println(resource.getRunning());
-				Output.getInstance().write(resource.getRunning());
+				String resID = resource.getType().toString() + resource.getId().toString();
+				toOutput += resID + ": " + resource.getRunning() + "|";
 				
 				if(resource.update())
 					finished = false;
@@ -100,7 +101,7 @@ public class Main {
 				
 			}
 			
-			
+			Output.getInstance().write("TIEMPO: " + clock + "=" + toOutput);
 			cm.flush();
 			iom.flush();
 
