@@ -6,11 +6,16 @@ import java.util.Comparator;
 public class Comparators {
 
     public static Comparator<Process> processComparator(Type type) {
+        return processComparator(type, 0);
+    }
+
+    public static Comparator<Process> processComparator(Type type, Integer aux) {
 
         switch (type) {
             case FIFO:
                 return processComparatorFifo();
-            case RR:;
+            case RR:
+                return processComparatorRR(aux);
             case AUX:;
             case SRT:;
             case HRRN:;
@@ -45,7 +50,7 @@ public class Comparators {
             private Integer quantum = q;
             @Override
             public int compare(Process o1, Process o2) {
-                return 0;
+                return this.quantum.compareTo(o1.getExecutionTime());
             }
         };
     }

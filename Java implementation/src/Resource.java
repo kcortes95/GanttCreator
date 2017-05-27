@@ -36,12 +36,9 @@ public abstract class Resource {
 				Process aux = this.obj;
 				this.obj = queue.poll();
 				this.counter = 0;
+				if (this.obj != null)
+					this.obj.setExecutionTime(0);
 				return aux;
-			}
-			if ( this.queue.comparator().compare(this.obj, this.queue.peek()) < 0 ) {
-				this.queue.add(this.obj);
-				this.obj = this.queue.poll();
-				return null;
 			}
 		}
 		return null;

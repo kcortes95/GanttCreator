@@ -49,14 +49,14 @@ public class Main {
 		readyMap.put(3, ary3);
 		
 		// Second create all Resources; cpu, io, etc
-        Comparator coreComparator = Comparators.processComparator(Comparators.Type.FIFO);
+        Comparator<Process> coreComparator = Comparators.processComparator(Comparators.Type.RR, 1);
 		Core core1 = new Core(1, coreComparator);
-		Core core2 = new Core(2, coreComparator);
+//		Core core2 = new Core(2, coreComparator);
 		IO io = new IO(1);
 		CoreManager cm = new CoreManager();
 		IOManager iom = new IOManager();
 		cm.add(1, core1);
-		cm.add(2, core2);
+//		cm.add(2, core2);
 		iom.add(1, io);
 
 		

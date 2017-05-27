@@ -6,12 +6,22 @@ public class Process{
 	private Core designatedCore;
 	private PriorityQueue<Klt> kltQueue;
 	private Klt klt;
+	private Integer executionTime;
 
 	public Process(String id, PriorityQueue<Klt> klts) {
 		this.id = id;
 		this.designatedCore = null;
 		this.kltQueue = klts;
 		this.klt = this.kltQueue.poll();
+		this.executionTime = 0;
+	}
+
+	public Integer getExecutionTime() {
+		return executionTime;
+	}
+
+	public void setExecutionTime(Integer executionTime) {
+		this.executionTime = executionTime;
 	}
 
 	public String getId() {
@@ -29,8 +39,9 @@ public class Process{
 	public Boolean update() {
 		if (this.klt == null)
 			return false;
-		else
-			return this.klt.update();
+
+		this.executionTime ++;
+		return this.klt.update();
 	}
 
 	public boolean finished() {

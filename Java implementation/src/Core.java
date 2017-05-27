@@ -14,9 +14,18 @@ public class Core extends Resource {
 
 	public Process finished() {
 		Process aux = super.finished();
-		if (this.obj == null || aux == null)
-			return aux;
 
+		if (this.obj == null ) return aux;
+
+		// If something to ran but expel
+		if ( this.queue.comparator().compare(this.obj, this.queue.peek()) <= 0 ) {
+			this.obj.setExecutionTime(0);
+			this.queue.add(this.obj);
+			this.obj = this.queue.poll();
+			this.obj.setExecutionTime(0);
+		}
+
+		// If loaded dosnt belong, discard and load next
 		Boolean condition = true;
 		while (condition) {
 			if (this.obj.getDesignatedCore() == null || this.obj.getDesignatedCore().getId() == this.getId()) {
@@ -26,6 +35,8 @@ public class Core extends Resource {
 				this.obj = this.queue.poll();
 				if (this.obj == null)
 					condition = false;
+				else
+					this.obj.setExecutionTime(0);
 			}
 
 		}
