@@ -96,7 +96,7 @@ public abstract class Resource {
 			
 		}
 		
-		return "PID: " + pid + " KLTID: " + kltid + " ULTID: " + ultid;
+		return "" + pid + " " + kltid + " " + ultid;
 	}
 	
 
