@@ -49,7 +49,9 @@ public class Main {
 		readyMap.put(3, ary3);
 		
 		// Second create all Resources; cpu, io, etc
-        Comparator<Process> coreComparator = Comparators.processComparator(Comparators.Type.FIFO, 1);
+        Comparator<Process> coreComparator = Comparators.processComparator(Comparators.Type.FIFO);
+		Comparator<Klt> kltComparator = Comparators.kltComparator(Comparators.Type.FIFO,2);
+		Comparator<Ult> ultComparator = Comparators.ultComparator(Comparators.Type.RR, 5);
 		Core core1 = new Core(1, coreComparator);
 //		Core core2 = new Core(2, coreComparator);
 		IO io = new IO(1);
@@ -81,7 +83,7 @@ public class Main {
 
 					//iterar por todos los resources preguntando por ult.getProcessId()
 					newUltAssigned = false;
-					PriorityQueue<Ult> tempUltQueue = new PriorityQueue<>();
+					PriorityQueue<Ult> tempUltQueue = new PriorityQueue<>(10, ultComparator);
 					tempUltQueue.add(ult);
 					
 					for (Resource each: resources) {
@@ -91,8 +93,8 @@ public class Main {
 						}
 					}
 					if (!newUltAssigned) {
-						PriorityQueue<Klt> auxKltQueue = new PriorityQueue<>();
-						PriorityQueue<Ult> auxUltQueue = new PriorityQueue<>();
+						PriorityQueue<Klt> auxKltQueue = new PriorityQueue<>(10, kltComparator);
+						PriorityQueue<Ult> auxUltQueue = new PriorityQueue<>(10, ultComparator);
 						auxUltQueue.add(ult);
 						Klt auxKlt = new Klt(ult.getKltId(), auxUltQueue);
 						auxKltQueue.add(auxKlt);

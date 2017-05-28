@@ -11,12 +11,13 @@ public class Ult {
     private String id;
     private String kltId;
     private String processId;
-    
     /**
-     * Esta variable la voy a utilizar luego para calcular el HRRN.
-     * Con el HRRN debo llevar control de cuanto tiempo corrio el ULT.
-     * Tengo luego que en el update sumarle 1 cada vez que se hace un decrement clock 
-     * en CPU!!!
+     * Current CPU executions on this rafaga
+     */
+    private Integer executionTime;
+
+    /**
+     * Total CPU executions
      */
     private Integer ranInCore = 0;
 
@@ -26,6 +27,7 @@ public class Ult {
     	this.arrivalTime = arrivalTime;
     	this.kltId = kltId;
     	this.processId = processId;
+        this.executionTime = 0;
     }
     
     //Esto vuelaaaaaa!!!
@@ -43,6 +45,7 @@ public class Ult {
     	this.arrivalTime = arrivalTime;
     	this.kltId = kltId;
     	this.processId = processId;
+        this.executionTime = 0;
     }
 
     public Integer getArrivalTime() {return arrivalTime;}
@@ -78,7 +81,8 @@ public class Ult {
 
     public Boolean update() {
         if (this.jobs.isEmpty()) return false;
-        
+
+        this.executionTime ++;
         Job actualJob = this.jobs.peek();
         actualJob.decrementClock();
         
@@ -112,7 +116,13 @@ public class Ult {
     	}
     	return counter;
     }
-    
-    //MIRAR TABLA DE LOS ALGORITMOS DEL LIBRO!
+
+    public Integer getExecutionTime() {
+        return executionTime;
+    }
+
+    public void setExecutionTime(Integer executionTime) {
+        this.executionTime = executionTime;
+    }
 
 }

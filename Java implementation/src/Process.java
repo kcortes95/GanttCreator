@@ -55,6 +55,14 @@ public class Process{
 			return true;
 		}
 
+		// If something to ran but expel
+		if ( !this.kltQueue.isEmpty() &&  this.kltQueue.comparator().compare(this.klt, this.kltQueue.peek()) <= 0 && this.klt.getUlt().nextJobType() == Job.Type.CPU ) {
+			this.klt.setExecutionTime(0);
+			this.kltQueue.add(this.klt);
+			this.klt = this.kltQueue.poll();
+			this.klt.setExecutionTime(0);
+		}
+
 		return false;
 	}
 
