@@ -19,16 +19,16 @@ public class Main {
         Map<Integer, List<Ult>> readyMap = i.getMap("." + File.separator + "src" + File.separator + "ejemplo.txt");
 		
 		// Second create all Resources; cpu, io, etc
-        Comparator<Process> coreComparator = Comparators.processComparator(Comparators.Type.FIFO);
+        Comparator<Process> coreComparator = Comparators.processComparator(Comparators.Type.RR, 2);
 		Comparator<Klt> kltComparator = Comparators.kltComparator(Comparators.Type.FIFO,2);
-		Comparator<Ult> ultComparator = Comparators.ultComparator(Comparators.Type.RR, 5);
+		Comparator<Ult> ultComparator = Comparators.ultComparator(Comparators.Type.FIFO, 5);
 		Core core1 = new Core(1, coreComparator);
-//		Core core2 = new Core(2, coreComparator);
+		Core core2 = new Core(2, coreComparator);
 		IO io = new IO(1);
 		CoreManager cm = new CoreManager();
 		IOManager iom = new IOManager();
 		cm.add(1, core1);
-//		cm.add(2, core2);
+		cm.add(2, core2);
 		iom.add(1, io);
 
 		
