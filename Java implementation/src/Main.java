@@ -19,8 +19,8 @@ public class Main {
         Map<Integer, List<Ult>> readyMap = i.getMap("." + File.separator + "src" + File.separator + "ejemplo.txt");
 		
 		// Second create all Resources; cpu, io, etc
-        AlgorithmComparator coreAlgComparator = Comparators.comparator(Comparators.Type.FIFO, 2);
-        AlgorithmComparator kltAlgComparator = Comparators.comparator(Comparators.Type.FIFO, 2);
+        AlgorithmComparator coreAlgComparator = Comparators.comparator(Comparators.Type.SRT, 3);
+        AlgorithmComparator kltAlgComparator = Comparators.comparator(Comparators.Type.FIFO, 3);
         AlgorithmComparator ultAlgComparator = Comparators.comparator(Comparators.Type.FIFO, 2);
 
 		Core core1 = new Core(1, coreAlgComparator);
@@ -29,7 +29,7 @@ public class Main {
 		CoreManager cm = new CoreManager();
 		IOManager iom = new IOManager();
 		cm.add(1, core1);
-//		cm.add(2, core2);
+		cm.add(2, core2);
 		iom.add(1, io);
 
 		
@@ -84,7 +84,7 @@ public class Main {
 				
 				if(resource.update(Clock.getInstance().getClock()))
 					finished = false;
-				Process p = (Process)resource.finished();
+				Process p = resource.finished();
 				
 				//tendriamos que trabajar con el nextTypeJob pero en la cola de jobs del ULT
 				if(p != null){

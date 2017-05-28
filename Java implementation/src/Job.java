@@ -2,7 +2,7 @@
 public class Job {
 
     private Type type;
-    private Integer clock;
+    private Integer clock = 0;
     
     public Job(Type type, Integer clock) {
 		this.type = type;
