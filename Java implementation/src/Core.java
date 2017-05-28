@@ -7,9 +7,10 @@ import java.util.PriorityQueue;
 public class Core extends Resource {
 
 
-	public Core(Integer id, Comparator<Process> cmp) {
+	public Core(Integer id, AlgorithmComparator aCmp) {
 		super(id, Job.Type.CPU);
-		this.queue = new PriorityQueue<Process>(10, cmp);
+		this.aCmp = aCmp;
+		this.queue = new PriorityQueue<>(10, aCmp.getCmp());
 	}
 
 	public Process finished() {
@@ -53,14 +54,28 @@ public class Core extends Resource {
 	 * } }
 	 */
 
-	public boolean assign(PriorityQueue<Ult> qult) {
-		boolean toret = super.assign(qult);
+	public boolean assign(PriorityQueue<Ult> qult, AlgorithmComparator aCmpUlt) {
+		boolean toret = super.assign(qult, aCmpUlt);
+
+        if ( !this.queue.isEmpty() && this.obj != null && (this.aCmp.isExpulsive() || this.obj.getExecutionTime() == 0) ) {
+            if (this.aCmp.getCmp().compare(this.obj, this.queue.peek()) < 0) {
+                this.queue.add(this.obj);
+                this.obj = this.queue.poll();
+            }
+        }
 
 		return toret && this.checkDesignatedCore();
 	}
 
 	public boolean assign(Process p) {
 		boolean toret = super.assign(p);
+
+        if ((this.aCmp.isExpulsive() || this.obj.getExecutionTime() == 0) && !this.queue.isEmpty()) {
+            if (this.aCmp.getCmp().compare(this.obj, this.queue.peek()) < 0) {
+                this.queue.add(this.obj);
+                this.obj = this.queue.poll();
+            }
+        }
 
 		return toret && this.checkDesignatedCore();
 	}

@@ -1,7 +1,7 @@
 import java.util.LinkedList;
 import java.util.Queue;
 
-public class Ult {
+public class Ult implements Executable{
 
     /**
      * Manejamos Jobs como una pila a la cual le devolvemos las tareas si no estan terminadas
@@ -101,7 +101,7 @@ public class Ult {
     	
     }
 
-    public int remainingCpuClocks(){
+    public Integer remainingCpuClocks(){
     	int counter = 0;
     	for( Job each : jobs ){
     		if(each.getType().equals(Job.Type.CPU)){
@@ -111,7 +111,7 @@ public class Ult {
     	return counter;
     }
 
-    public int totalRanCpuClocks(){
+    public Integer totalRanCpuClocks(){
         return ranInCore;
     }
 

@@ -1,17 +1,19 @@
 import java.util.PriorityQueue;
 
-public class Klt {
+public class Klt implements Executable {
 
     private String id;
+    protected AlgorithmComparator aCmp;
     private PriorityQueue<Ult> ultQueue;
     private Ult ult;
     private Integer executionTime;
 
-    public Klt(String id, PriorityQueue<Ult> ults) {
+    public Klt(String id, PriorityQueue<Ult> ults, AlgorithmComparator aCmp) {
         this.id = id;
         this.ultQueue = ults;
         this.ult = this.ultQueue.poll();
         this.executionTime = 0;
+        this.aCmp = aCmp;
     }
 
     public String getId() {
@@ -26,7 +28,7 @@ public class Klt {
         return this.ult.update(clock);
     }
 
-    public boolean finished() {
+    public Boolean finished() {
         if (this.ult == null) return true;
 
         if (this.ult.finished()) {
@@ -52,8 +54,16 @@ public class Klt {
     public void assign(Ult ult) {
         if (this.ult == null)
             this.ult = ult;
-        else
-            this.ultQueue.add(ult);
+        else {
+            if (this.aCmp.isExpulsive() || this.ult.getExecutionTime() == 0) {
+                if (this.aCmp.getCmp().compare(this.ult, ult) < 0) {
+                    this.ultQueue.add(this.ult);
+                    this.ult = ult;
+                } else {
+                    this.ultQueue.add(ult);
+                }
+            }
+        }
     }
 
     @Override
@@ -71,7 +81,7 @@ public class Klt {
         this.executionTime = executionTime;
     }
 
-    public int remainingCpuClocks(){
+    public Integer remainingCpuClocks(){
         int counter = 0;
         for( Ult each : ultQueue){
             counter += each.remainingCpuClocks();
@@ -79,7 +89,7 @@ public class Klt {
         return counter;
     }
 
-    public int totalRanCpuClocks(){
+    public Integer totalRanCpuClocks(){
         int counter = 0;
         for( Ult each : ultQueue){
             counter += each.totalRanCpuClocks();

@@ -5,7 +5,8 @@ public abstract class Resource {
 	protected Integer id;
 	protected Job.Type type;
 	protected Process obj;
-	protected PriorityQueue<Process> queue = new PriorityQueue<>(10, Comparators.processComparator(Comparators.Type.FIFO));
+	protected AlgorithmComparator aCmp = Comparators.comparator(Comparators.Type.FIFO);
+	protected PriorityQueue<Process> queue = new PriorityQueue<>(10, aCmp.getCmp());
 	protected Integer counter = 0;
 	protected Integer lastClock;
 
@@ -47,19 +48,19 @@ public abstract class Resource {
 		return null;
 	}
 
-	public boolean assign(PriorityQueue<Ult> qult) {
+	public boolean assign(PriorityQueue<Ult> qult, AlgorithmComparator aCmpUlt) {
 
 		Ult obj = qult.peek();
 		if (this.obj == null)
 			return false;
 
 		if (this.obj.getId().equals(obj.getProcessId())) {
-			this.obj.assign(qult);
+			this.obj.assign(qult, aCmpUlt);
 			return true;
 		} else {
 			for (Process proc : this.queue) {
 				if (proc.getId().equals(obj.getProcessId())) {
-					proc.assign(qult);
+					proc.assign(qult, aCmpUlt);
 					return true;
 				}
 			}

@@ -19,11 +19,12 @@ public class Main {
         Map<Integer, List<Ult>> readyMap = i.getMap("." + File.separator + "src" + File.separator + "ejemplo.txt");
 		
 		// Second create all Resources; cpu, io, etc
-        Comparator<Process> coreComparator = Comparators.processComparator(Comparators.Type.RR, 2);
-		Comparator<Klt> kltComparator = Comparators.kltComparator(Comparators.Type.FIFO,2);
-		Comparator<Ult> ultComparator = Comparators.ultComparator(Comparators.Type.FIFO, 5);
-		Core core1 = new Core(1, coreComparator);
-		Core core2 = new Core(2, coreComparator);
+        AlgorithmComparator coreAlgComparator = Comparators.comparator(Comparators.Type.FIFO, 2);
+        AlgorithmComparator kltAlgComparator = Comparators.comparator(Comparators.Type.FIFO, 2);
+        AlgorithmComparator ultAlgComparator = Comparators.comparator(Comparators.Type.FIFO, 2);
+
+		Core core1 = new Core(1, coreAlgComparator);
+		Core core2 = new Core(2, coreAlgComparator);
 		IO io = new IO(1);
 		CoreManager cm = new CoreManager();
 		IOManager iom = new IOManager();
@@ -53,22 +54,22 @@ public class Main {
 
 					//iterar por todos los resources preguntando por ult.getProcessId()
 					newUltAssigned = false;
-					PriorityQueue<Ult> tempUltQueue = new PriorityQueue<>(10, ultComparator);
+					PriorityQueue<Ult> tempUltQueue = new PriorityQueue<>(10, ultAlgComparator.getCmp());
 					tempUltQueue.add(ult);
-					
+
 					for (Resource each: resources) {
-						if (each.assign(tempUltQueue)) {
+						if (each.assign(tempUltQueue, ultAlgComparator)) {
 							newUltAssigned = true;
 							break;
 						}
 					}
 					if (!newUltAssigned) {
-						PriorityQueue<Klt> auxKltQueue = new PriorityQueue<>(10, kltComparator);
-						PriorityQueue<Ult> auxUltQueue = new PriorityQueue<>(10, ultComparator);
+						PriorityQueue<Klt> auxKltQueue = new PriorityQueue<>(10, kltAlgComparator.getCmp());
+						PriorityQueue<Ult> auxUltQueue = new PriorityQueue<>(10, ultAlgComparator.getCmp());
 						auxUltQueue.add(ult);
-						Klt auxKlt = new Klt(ult.getKltId(), auxUltQueue);
+						Klt auxKlt = new Klt(ult.getKltId(), auxUltQueue, ultAlgComparator);
 						auxKltQueue.add(auxKlt);
-						Process auxProcess = new Process(ult.getProcessId(), auxKltQueue);
+						Process auxProcess = new Process(ult.getProcessId(), auxKltQueue, kltAlgComparator);
 						cm.newProcess(auxProcess);
 					}
 				}
@@ -83,7 +84,7 @@ public class Main {
 				
 				if(resource.update(Clock.getInstance().getClock()))
 					finished = false;
-				Process p = resource.finished();
+				Process p = (Process)resource.finished();
 				
 				//tendriamos que trabajar con el nextTypeJob pero en la cola de jobs del ULT
 				if(p != null){

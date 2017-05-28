@@ -1,19 +1,22 @@
+import java.lang.reflect.*;
 import java.util.*;
 
-public class Process{
+public class Process implements Executable{
 
 	private String id;
 	private Core designatedCore;
+    protected AlgorithmComparator aCmp;
 	private PriorityQueue<Klt> kltQueue;
 	private Klt klt;
 	private Integer executionTime;
 
-	public Process(String id, PriorityQueue<Klt> klts) {
+	public Process(String id, PriorityQueue<Klt> klts, AlgorithmComparator aCmp) {
 		this.id = id;
 		this.designatedCore = null;
 		this.kltQueue = klts;
 		this.klt = this.kltQueue.poll();
 		this.executionTime = 0;
+		this.aCmp = aCmp;
 	}
 
 	public Integer getExecutionTime() {
@@ -67,26 +70,37 @@ public class Process{
 		return false;
 	}
 
-	public void assign(PriorityQueue<Ult> ultQ) {
+	public void assign(PriorityQueue<Ult> ultQ, AlgorithmComparator aCmpUlt) {
 
 		Ult ult = ultQ.peek();
 
 		String idKlt = ult.getKltId();
 
+		Boolean done = false;
+
 		if (this.klt.getId().equals(idKlt)) {
 			this.klt.assign(ult);
-			return;
-		}
+			done = true;
+		} else {
+            for (Klt each : this.kltQueue) {
+                if (each.getId().equals(idKlt)) {
+                    each.assign(ult);
+                    done = true;
+                    break;
+                }
+            }
+        }
+        if (!done) {
+            Klt kltAux = new Klt(ult.getKltId(), ultQ, aCmpUlt);
+            this.kltQueue.add(kltAux);
+        }
 
-		for (Klt each : this.kltQueue) {
-			if (each.getId().equals(idKlt)) {
-				each.assign(ult);
-				return;
-			}
-		}
-
-		Klt kltAux = new Klt(ult.getKltId(), ultQ);
-		this.kltQueue.add(kltAux);
+        if ((this.aCmp.isExpulsive() || this.klt.getExecutionTime() == 0) && !this.kltQueue.isEmpty()) {
+            if (this.aCmp.getCmp().compare(this.klt, this.kltQueue.peek()) < 0) {
+                this.kltQueue.add(this.klt);
+                this.klt = this.kltQueue.poll();
+            }
+        }
 	}
 
 	@Override
@@ -98,7 +112,7 @@ public class Process{
 		return klt;
 	}
 
-	public int remainingCpuClocks(){
+	public Integer remainingCpuClocks(){
 		int counter = 0;
 		for( Klt each : kltQueue){
 			counter += each.remainingCpuClocks();
@@ -106,7 +120,7 @@ public class Process{
 		return counter;
 	}
 
-	public int totalRanCpuClocks(){
+	public Integer totalRanCpuClocks(){
 		int counter = 0;
 		for( Klt each : kltQueue){
 			counter += each.totalRanCpuClocks();
