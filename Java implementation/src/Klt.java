@@ -30,6 +30,7 @@ public class Klt {
         if (this.ult == null) return true;
 
         if (this.ult.finished()) {
+            this.ult.setExecutionTime(0);
             if (this.ult.nextJobType() == null) {
                 this.ult = this.ultQueue.poll();
                 if (this.ult != null) return false;

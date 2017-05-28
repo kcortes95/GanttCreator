@@ -58,7 +58,7 @@ public class Ult {
 
     @Override
     public String toString() {
-        return this.id+"-"+this.jobs.peek();
+        return this.id;
     }
 
 //    public boolean isFinishedCurrentJob(){

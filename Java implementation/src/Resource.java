@@ -15,7 +15,7 @@ public abstract class Resource {
 
 	public Boolean update() {
 		this.counter++;
-		System.out.println(this.getType() + "" + this.id + ": update " + obj);
+		if(this.obj != null) System.out.println(this.getType() + "" + this.id + ": " + obj);
 		if (this.obj != null)
 			return this.obj.update();
 		return false;
@@ -33,6 +33,7 @@ public abstract class Resource {
 
 		if (this.obj != null) {
 			if (this.obj.finished()) {
+				this.obj.setExecutionTime(0);
 				Process aux = this.obj;
 				this.obj = queue.poll();
 				this.counter = 0;

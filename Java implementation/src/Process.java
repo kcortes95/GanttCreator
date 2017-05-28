@@ -48,6 +48,7 @@ public class Process{
 		if (this.klt == null) return true;
 
 		if (this.klt.finished()) {
+			this.klt.setExecutionTime(0);
 			if (this.klt.getUlt() == null) {
 				this.klt = this.kltQueue.poll();
 				if (this.klt != null) return false;
@@ -90,7 +91,7 @@ public class Process{
 
 	@Override
 	public String toString() {
-		return "Running=" + this.id + "-" + this.klt;
+		return this.id + "-" + this.klt;
 	}
 
 	public Klt getKlt() {

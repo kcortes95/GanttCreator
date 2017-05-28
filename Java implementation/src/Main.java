@@ -44,8 +44,9 @@ public class Main {
 		resources.addAll(rc);
 		
 		while (!finished) {
-			
-			finished = true;
+            System.out.println("Clock " + clock);
+
+            finished = true;
 
 			if(readyMap.containsKey(clock)){
 				for(Ult ult : readyMap.get(clock)){
