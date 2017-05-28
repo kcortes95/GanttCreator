@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="javascript.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.98.2/css/materialize.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.98.2/js/materialize.min.js"></script>
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <link rel="stylesheet" type="text/css" href="style.css">
+</head>
+
+<!--<body onload="readFile();">-->
+<body>
+
+  <nav>
+    <div class="nav-wrapper indigo">
+      <div class="container">
+      <img src="img/logo.png" id="main-logo"></img>
+      <ul class="right hide-on-med-and-down">
+        <li><a onclick="refreshSite();"><i class="material-icons">refresh</i></a></li>
+      </ul>
+      </div>
+    </div>
+  </nav>
+
+  <div class="container">
+    <h5>
+      Grupo 5
+    </h5>
+    <h6>Cifuentes, Ignacio - Cortes Rodriguez, Kevin - Capparelli, Federico</h6>
+
+    <div class="content">
+
+      <form action="#">
+        <div class="file-field input-field">
+          <div class="btn indigo" id="attach">
+            <span>File</span>
+            <input type="file" accept='text/plain' onchange='openFile(event)'>
+          </div>
+          <div class="file-path-wrapper">
+            <input class="file-path validate" type="text">
+          </div>
+        </div>
+      </form>
+
+      <!--<input type='file' accept='text/plain' onchange='openFile(event)'><br>-->
+      <div id="main-content-section" class="row">
+
+        <div class="col s4">
+          <div class="card-panel indigo lighten-2">
+            <div class="white-text" id="clockv1"></div>
+            <div class="white-text" id="c1v1"></div>
+            <div class="white-text" id="c2v1"></div>
+            <div class="white-text" id="iov1"></div>
+          </div>
+        </div>
+
+        <div class="col s4">
+          <div class="card-panel indigo lighten-2">
+            <div class="white-text" id="clockv2"></div>
+            <div class="white-text" id="c1v2"></div>
+            <div class="white-text" id="c2v2"></div>
+            <div class="white-text" id="iov2"></div>
+          </div>
+        </div>
+
+        <div class="col s4">
+          <div class="card-panel indigo lighten-2">
+            <div class="white-text" id="clockv3"></div>
+            <div class="white-text" id="c1v3"></div>
+            <div class="white-text" id="c2v3"></div>
+            <div class="white-text" id="iov3"></div>
+          </div>
+        </div>
+
+      </div>
+      
+
+      <div id="btn-section" class="center">
+        <a class="btn-floating btn-large waves-effect waves-light red" onclick="previousButton();" id="prev"><i class="material-icons">skip_previous</i></a>
+        <a class="btn-floating btn-large waves-effect waves-light red" onclick="nextButton();" id="next"><i class="material-icons">skip_next</i></a>
+      </div>
+
+    </div>
+
+  </div>
+
+</body>
+</html>
