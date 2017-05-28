@@ -11,6 +11,8 @@ public class Ult {
     private String id;
     private String kltId;
     private String processId;
+    private Integer lastClock;
+
     /**
      * Current CPU executions on this rafaga
      */
@@ -48,8 +50,6 @@ public class Ult {
         this.executionTime = 0;
     }
 
-    public Integer getArrivalTime() {return arrivalTime;}
-
     public String getId() {return id;}
 
     public String getKltId() {return kltId;}
@@ -79,7 +79,8 @@ public class Ult {
         return false;
     }
 
-    public Boolean update() {
+    public Boolean update(Integer clock) {
+        this.lastClock = clock;
         if (this.jobs.isEmpty()) return false;
 
         this.executionTime ++;
@@ -99,15 +100,8 @@ public class Ult {
     	return jobs.peek().getType();
     	
     }
-    
-    /**
-     * Calcula cuanto falta para que dicho proceso termine (contando unicamente
-     * los tiempos de CPU, no los de IO)
-     * Esto se hace para luego implementar los distintos algoritmos expulsivos
-     * y no expulsivos
-     * @return
-     */
-    public int jobsEstimator(){
+
+    public int remainingCpuClocks(){
     	int counter = 0;
     	for( Job each : jobs ){
     		if(each.getType().equals(Job.Type.CPU)){
@@ -117,12 +111,21 @@ public class Ult {
     	return counter;
     }
 
+    public int totalRanCpuClocks(){
+        return ranInCore;
+    }
+
+
     public Integer getExecutionTime() {
         return executionTime;
     }
 
     public void setExecutionTime(Integer executionTime) {
         this.executionTime = executionTime;
+    }
+
+    public Integer getLastClock() {
+        return lastClock;
     }
 
 }

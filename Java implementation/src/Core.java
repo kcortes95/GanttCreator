@@ -18,7 +18,7 @@ public class Core extends Resource {
 		if (this.obj == null ) return aux;
 
 		// If something to ran but expel
-		if ( this.queue.comparator().compare(this.obj, this.queue.peek()) <= 0 ) {
+		if ( this.queue.comparator().compare(this.obj, this.queue.peek()) < 0 ) {
 			this.obj.setExecutionTime(0);
 			this.queue.add(this.obj);
 			this.obj = this.queue.poll();

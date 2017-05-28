@@ -7,17 +7,19 @@ public abstract class Resource {
 	protected Process obj;
 	protected PriorityQueue<Process> queue = new PriorityQueue<>(10, Comparators.processComparator(Comparators.Type.FIFO));
 	protected Integer counter = 0;
+	protected Integer lastClock;
 
 	Resource(Integer id, Job.Type type) {
 		this.id = id;
 		this.type = type;
 	}
 
-	public Boolean update() {
+	public Boolean update(Integer clock) {
+	    this.lastClock = clock;
 		this.counter++;
 		if(this.obj != null) System.out.println(this.getType() + "" + this.id + ": " + obj);
 		if (this.obj != null)
-			return this.obj.update();
+			return this.obj.update(clock);
 		return false;
 	}
 

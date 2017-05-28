@@ -18,12 +18,12 @@ public class Klt {
         return id;
     }
 
-    public Boolean update() {
+    public Boolean update(Integer clock) {
         if (this.ult == null)
             return false;
 
         this.executionTime++;
-        return this.ult.update();
+        return this.ult.update(clock);
     }
 
     public boolean finished() {
@@ -39,7 +39,7 @@ public class Klt {
         }
 
         // If something to ran but expel
-        if ( !this.ultQueue.isEmpty() && this.ultQueue.comparator().compare(this.ult, this.ultQueue.peek()) <= 0 && this.ult.nextJobType() == Job.Type.CPU ) {
+        if ( !this.ultQueue.isEmpty() && this.ultQueue.comparator().compare(this.ult, this.ultQueue.peek()) < 0 && this.ult.nextJobType() == Job.Type.CPU ) {
             this.ult.setExecutionTime(0);
             this.ultQueue.add(this.ult);
             this.ult = this.ultQueue.poll();
@@ -69,5 +69,33 @@ public class Klt {
 
     public void setExecutionTime(Integer executionTime) {
         this.executionTime = executionTime;
+    }
+
+    public int remainingCpuClocks(){
+        int counter = 0;
+        for( Ult each : ultQueue){
+            counter += each.remainingCpuClocks();
+        }
+        return counter;
+    }
+
+    public int totalRanCpuClocks(){
+        int counter = 0;
+        for( Ult each : ultQueue){
+            counter += each.totalRanCpuClocks();
+        }
+        return counter;
+    }
+
+    public Integer getLastClock() {
+        Ult latest = ultQueue.peek();
+        for( Ult each : ultQueue){
+            if (each.getLastClock() > latest.getLastClock())
+                latest = each;
+        }
+        if (latest != null)
+            return latest.getLastClock();
+        else
+            return 0;
     }
 }

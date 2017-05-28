@@ -28,14 +28,13 @@ public class Main {
 		CoreManager cm = new CoreManager();
 		IOManager iom = new IOManager();
 		cm.add(1, core1);
-		cm.add(2, core2);
+//		cm.add(2, core2);
 		iom.add(1, io);
 
 		
 		// Fourth, start clock iterations until TaskManager signals halt
 		Boolean finished = false;
 		Boolean newUltAssigned;
-		int clock = 0;
 
 		Collection<IO> rio = iom.getValues();
 		Collection<Core> rc = cm.getValues();
@@ -44,12 +43,12 @@ public class Main {
 		resources.addAll(rc);
 		
 		while (!finished) {
-            System.out.println("Clock " + clock);
+            System.out.println("Clock " + Clock.getInstance().getClock());
 
             finished = true;
 
-			if(readyMap.containsKey(clock)){
-				for(Ult ult : readyMap.get(clock)){
+			if(readyMap.containsKey(Clock.getInstance().getClock())){
+				for(Ult ult : readyMap.get(Clock.getInstance().getClock())){
 					//System.out.println("Entra en ready ---> " + ult);
 
 					//iterar por todos los resources preguntando por ult.getProcessId()
@@ -82,7 +81,7 @@ public class Main {
 				String resID = resource.getType().toString() + resource.getId().toString();
 				toOutput += resID + ": " + resource.getRunning() + "|";
 				
-				if(resource.update())
+				if(resource.update(Clock.getInstance().getClock()))
 					finished = false;
 				Process p = resource.finished();
 				
@@ -106,11 +105,11 @@ public class Main {
 				
 			}
 			
-			Output.getInstance().write("TIEMPO: " + clock + "=" + toOutput);
+			Output.getInstance().write("TIEMPO: " + Clock.getInstance().getClock() + "=" + toOutput);
 			cm.flush();
 			iom.flush();
 
-			clock++;
+            Clock.getInstance().incrementClock();
 			//System.out.println("*********");
 		}
 		
