@@ -117,7 +117,7 @@ public class Main {
 	
 	public static void runUI(){
 		Runtime rTime = Runtime.getRuntime();
-		String url = "." + File.separator + "index.html";
+		String url = "index.html";
 		File htmlFile = new File(url);
 		
 		try {
