@@ -16,7 +16,7 @@ public class Main {
 		// Collection<Process> processes = Input.fileReader("sample.txt");
 
 		Input i = new Input();
-		Map<Integer, List<Ult>> readyMap = i.getMap("ejemplo.txt");
+        Map<Integer, List<Ult>> readyMap = i.getMap("." + File.separator + "src" + File.separator + "ejemplo.txt");
 		
 		// Second create all Resources; cpu, io, etc
 		Core core1 = new Core(1);
@@ -117,7 +117,7 @@ public class Main {
 	
 	public static void runUI(){
 		Runtime rTime = Runtime.getRuntime();
-		String url = "../index.html";
+		String url = "." + File.separator + "index.html";
 		File htmlFile = new File(url);
 		
 		try {
