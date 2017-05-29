@@ -82,9 +82,9 @@ public abstract class Resource {
 	}
 	
 	public String getRunning(){
-		String pid = "NULL";
-		String kltid = "NULL";
-		String ultid = "NULL";
+		String pid = "";
+		String kltid = "";
+		String ultid = "";
 		
 		if(obj!=null){
 			pid = obj.getId();
