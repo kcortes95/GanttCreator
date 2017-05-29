@@ -6,7 +6,19 @@ var actual_pos  = 0;
 $( document ).ready(function() {
     $("#main-content-section").hide();
     $("#btn-section").hide();
+	
+	//alert(parseURL());	
+
 });
+
+function parseURL(){
+	
+	var str = document.URL;
+	var ar = new Array();
+	ar = str.split("?");
+	return ar[1];
+
+}
 
 var openFile = function(event) {
     
