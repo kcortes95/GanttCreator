@@ -17,8 +17,8 @@ public class Main {
 		// this class
 		// Collection<Process> processes = Input.fileReader("sample.txt");
 
-        //Map<Integer, List<Ult>> readyMap = i.getMap("." + File.separator + "src" + File.separator + "ejemplo.txt");
-		Map<Integer, List<Ult>> readyMap = Input.getInstance().getMap("ejemplo.txt");
+        Map<Integer, List<Ult>> readyMap = Input.getInstance().getMap("." + File.separator + "src" + File.separator + "ejemplo_item_8_1c.txt");
+		//Map<Integer, List<Ult>> readyMap = Input.getInstance().getMap("ejemplo.txt");
 		
 		
 		// Second create all Resources; cpu, io, etc
@@ -130,8 +130,8 @@ public class Main {
 	
 	public static void runUI(){
 		Runtime rTime = Runtime.getRuntime();
-		//String url = "index.html";
-		String url = "../index.html";
+		String url = "index.html";
+		//String url = "../index.html";
 		File htmlFile = new File(url);
 		
 		try {
