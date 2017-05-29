@@ -1,4 +1,3 @@
-
 public class Job {
 
     private Type type;

@@ -1,9 +1,5 @@
-import java.util.Comparator;
 import java.util.PriorityQueue;
 
-/**
- * Created by nacho on 4/30/17.
- */
 public class Core extends Resource {
 
 
@@ -44,15 +40,6 @@ public class Core extends Resource {
 
 		return aux;
 	}
-
-	/*
-	 * //Previous version (only for processes) public void assign(Process p) {
-	 * super.assign(p); if (this.queue.isEmpty()) { if
-	 * (this.obj.getDesignatedCore() != null &&
-	 * this.obj.getDesignatedCore().getId() != this.getId()) this.obj = null; if
-	 * (this.obj.getDesignatedCore() == null) this.obj.setDesignatedCore(this);
-	 * } }
-	 */
 
 	public boolean assign(PriorityQueue<Ult> qult, AlgorithmComparator aCmpUlt) {
 		boolean toret = super.assign(qult, aCmpUlt);

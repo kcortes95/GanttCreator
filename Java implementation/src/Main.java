@@ -3,25 +3,14 @@ import java.io.File;
 import java.io.IOException;
 import java.util.*;
 
-import javafx.scene.input.InputMethodHighlight;
-
 public class Main {
 
 	public static void main(String[] args) {
 
-		//System.out.println("*******************");
-		//System.out.println("*  Gantt Creator  *");
-		//System.out.println("*******************\n\n");
-
-		// First parse input or retrieve demo data created on some method in
-		// this class
-		// Collection<Process> processes = Input.fileReader("sample.txt");
-
-        Map<Integer, List<Ult>> readyMap = Input.getInstance().getMap("." + File.separator + "src" + File.separator + "ejemplo_item_8_1c.txt");
+        Map<Integer, List<Ult>> readyMap = Input.getInstance().getMap("." + File.separator + "src" + File.separator + "243.txt");
 		//Map<Integer, List<Ult>> readyMap = Input.getInstance().getMap("ejemplo.txt");
 		
 		
-		// Second create all Resources; cpu, io, etc
         AlgorithmComparator coreAlgComparator = Comparators.comparator(Input.getInstance().getProcessAlg(), Input.getInstance().getProcessQuantum());
         AlgorithmComparator kltAlgComparator = Comparators.comparator(Input.getInstance().getProcessAlg(), Input.getInstance().getProcessQuantum());
         AlgorithmComparator ultAlgComparator = Comparators.comparator(Input.getInstance().getThreadAlg(), Input.getInstance().getThreadQuantum());
@@ -81,7 +70,7 @@ public class Main {
 						cm.newProcess(auxProcess);
 					}
 				}
-			} //cierre de ready map
+			} 
 			
 			String toOutput = "";
 
@@ -94,7 +83,6 @@ public class Main {
 					finished = false;
 				Process p = resource.finished();
 				
-				//tendriamos que trabajar con el nextTypeJob pero en la cola de jobs del ULT
 				if(p != null){
 					if( p.getKlt() != null && p.getKlt().getUlt() != null){
 						Ult ult = p.getKlt().getUlt();
@@ -119,7 +107,6 @@ public class Main {
 			iom.flush();
 
             Clock.getInstance().incrementClock();
-			//System.out.println("*********");
 		}
 		
 		Output.getInstance().close();
@@ -137,7 +124,6 @@ public class Main {
 		try {
 			Desktop.getDesktop().browse(htmlFile.toURI());
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
