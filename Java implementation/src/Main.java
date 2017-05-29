@@ -3,6 +3,8 @@ import java.io.File;
 import java.io.IOException;
 import java.util.*;
 
+import javafx.scene.input.InputMethodHighlight;
+
 public class Main {
 
 	public static void main(String[] args) {
@@ -15,23 +17,29 @@ public class Main {
 		// this class
 		// Collection<Process> processes = Input.fileReader("sample.txt");
 
-		Input i = new Input();
-        Map<Integer, List<Ult>> readyMap = i.getMap("." + File.separator + "src" + File.separator + "ejemplo.txt");
+        //Map<Integer, List<Ult>> readyMap = i.getMap("." + File.separator + "src" + File.separator + "ejemplo.txt");
+		Map<Integer, List<Ult>> readyMap = Input.getInstance().getMap("ejemplo.txt");
+		
 		
 		// Second create all Resources; cpu, io, etc
-        AlgorithmComparator coreAlgComparator = Comparators.comparator(Comparators.Type.SRT, 2);
-        AlgorithmComparator kltAlgComparator = Comparators.comparator(Comparators.Type.RR, 2);
-        AlgorithmComparator ultAlgComparator = Comparators.comparator(Comparators.Type.RR, 3);
+        AlgorithmComparator coreAlgComparator = Comparators.comparator(Input.getInstance().getProcessAlg(), Input.getInstance().getProcessQuantum());
+        AlgorithmComparator kltAlgComparator = Comparators.comparator(Input.getInstance().getProcessAlg(), Input.getInstance().getProcessQuantum());
+        AlgorithmComparator ultAlgComparator = Comparators.comparator(Input.getInstance().getThreadAlg(), Input.getInstance().getThreadQuantum());
 
-		Core core1 = new Core(1, coreAlgComparator);
-		Core core2 = new Core(2, coreAlgComparator);
-		IO io = new IO(1);
 		CoreManager cm = new CoreManager();
 		IOManager iom = new IOManager();
-		cm.add(1, core1);
-//		cm.add(2, core2);
-		iom.add(1, io);
 
+		Core[] cores = new Core[Input.getInstance().getCores()];
+        for(int i = 0 ; i < Input.getInstance().getCores() ; i++){
+        	cores[i] = new Core(i + 1, coreAlgComparator);
+        	cm.add(i + 1, cores[i]);
+        }
+        
+        IO[] ios = new IO[Input.getInstance().getIO()];
+        for(int i = 0 ; i < Input.getInstance().getIO() ; i++){
+        	ios[i] = new IO(i + 1);
+        	iom.add(i + 1, ios[i]);
+        }
 		
 		// Fourth, start clock iterations until TaskManager signals halt
 		Boolean finished = false;
@@ -122,7 +130,8 @@ public class Main {
 	
 	public static void runUI(){
 		Runtime rTime = Runtime.getRuntime();
-		String url = "index.html";
+		//String url = "index.html";
+		String url = "../index.html";
 		File htmlFile = new File(url);
 		
 		try {

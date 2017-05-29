@@ -15,7 +15,7 @@ public class Output {
 			instance = new Output();
 			Calendar cal = Calendar.getInstance();
 			SimpleDateFormat sdf = new SimpleDateFormat("hh-mm-ss");
-			String allDate = cal.get(Calendar.DAY_OF_MONTH) + "-" + cal.get(Calendar.MONTH) + "-" + cal.get(Calendar.YEAR);
+			String allDate = cal.get(Calendar.DAY_OF_MONTH) + "-" + cal.get(Calendar.MONTH + 1) + "-" + cal.get(Calendar.YEAR);
 			fileName = "gantt-" + sdf.format(cal.getTime()).toString() + "-" + allDate;
 		}
 
