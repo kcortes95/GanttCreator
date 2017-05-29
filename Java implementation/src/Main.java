@@ -19,9 +19,9 @@ public class Main {
         Map<Integer, List<Ult>> readyMap = i.getMap("." + File.separator + "src" + File.separator + "ejemplo.txt");
 		
 		// Second create all Resources; cpu, io, etc
-        AlgorithmComparator coreAlgComparator = Comparators.comparator(Comparators.Type.SRT, 3);
-        AlgorithmComparator kltAlgComparator = Comparators.comparator(Comparators.Type.FIFO, 3);
-        AlgorithmComparator ultAlgComparator = Comparators.comparator(Comparators.Type.FIFO, 2);
+        AlgorithmComparator coreAlgComparator = Comparators.comparator(Comparators.Type.SRT, 2);
+        AlgorithmComparator kltAlgComparator = Comparators.comparator(Comparators.Type.RR, 2);
+        AlgorithmComparator ultAlgComparator = Comparators.comparator(Comparators.Type.RR, 3);
 
 		Core core1 = new Core(1, coreAlgComparator);
 		Core core2 = new Core(2, coreAlgComparator);
@@ -29,14 +29,14 @@ public class Main {
 		CoreManager cm = new CoreManager();
 		IOManager iom = new IOManager();
 		cm.add(1, core1);
-		cm.add(2, core2);
+//		cm.add(2, core2);
 		iom.add(1, io);
 
 		
 		// Fourth, start clock iterations until TaskManager signals halt
 		Boolean finished = false;
 		Boolean newUltAssigned;
-
+        Clock clock = Clock.getInstance();
 		Collection<IO> rio = iom.getValues();
 		Collection<Core> rc = cm.getValues();
 		Collection<Resource> resources = new LinkedList<>();

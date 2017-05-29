@@ -41,7 +41,7 @@ public class Klt implements Executable {
         }
 
         // If something to ran but expel
-        if ( !this.ultQueue.isEmpty() && this.ultQueue.comparator().compare(this.ult, this.ultQueue.peek()) < 0 && this.ult.nextJobType() == Job.Type.CPU ) {
+        if ( !this.ultQueue.isEmpty() && this.ultQueue.comparator().compare(this.ult, this.ultQueue.peek()) > 0 && this.ult.nextJobType() == Job.Type.CPU ) {
             this.ult.setExecutionTime(0);
             this.ultQueue.add(this.ult);
             this.ult = this.ultQueue.poll();
@@ -56,13 +56,14 @@ public class Klt implements Executable {
             this.ult = ult;
         else {
             if (this.aCmp.isExpulsive() || this.ult.getExecutionTime() == 0) {
-                if (this.aCmp.getCmp().compare(this.ult, ult) < 0) {
+                if (this.aCmp.getCmp().compare(this.ult, ult) > 0) {
                     this.ultQueue.add(this.ult);
                     this.ult = ult;
                 } else {
                     this.ultQueue.add(ult);
                 }
-            }
+            } else
+                this.ultQueue.add(ult);
         }
     }
 
@@ -83,6 +84,8 @@ public class Klt implements Executable {
 
     public Integer remainingCpuClocks(){
         int counter = 0;
+        if (this.ult != null)
+            counter += this.ult.remainingCpuClocks();
         for( Ult each : ultQueue){
             counter += each.remainingCpuClocks();
         }
@@ -91,6 +94,8 @@ public class Klt implements Executable {
 
     public Integer totalRanCpuClocks(){
         int counter = 0;
+        if (this.ult != null)
+            counter += this.ult.totalRanCpuClocks();
         for( Ult each : ultQueue){
             counter += each.totalRanCpuClocks();
         }
@@ -98,7 +103,9 @@ public class Klt implements Executable {
     }
 
     public Integer getLastClock() {
-        Ult latest = ultQueue.peek();
+        Ult latest = this.ult;
+        if (latest == null)
+            ultQueue.peek();
         for( Ult each : ultQueue){
             if (each.getLastClock() > latest.getLastClock())
                 latest = each;

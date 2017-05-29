@@ -62,6 +62,8 @@ public class Comparators {
             private Integer quantum = q;
             @Override
             public int compare(Executable o1, Executable o2) {
+                if (o1.getExecutionTime() == 0 && o2.getExecutionTime() == 0) //solo ocurre en expel evaluation
+                    return 0; //evita expulsion
                 return this.quantum.compareTo(o1.getExecutionTime()+1);
             }
         };
@@ -76,7 +78,7 @@ public class Comparators {
         return new Comparator<Executable>() {
             @Override
             public int compare(Executable o1, Executable o2) {
-                return o2.remainingCpuClocks() - o1.remainingCpuClocks();
+                return o1.remainingCpuClocks() - o2.remainingCpuClocks();
             }
         };
     }
@@ -92,7 +94,7 @@ public class Comparators {
             public int compare(Executable o1, Executable o2) {
                 if (o1.totalRanCpuClocks() > o2.totalRanCpuClocks()) //solo ocurre en expel evaluation
                     return 0; //evita expulsion
-                return o2.remainingCpuClocks() + o2.totalRanCpuClocks() - o1.remainingCpuClocks() - o1.totalRanCpuClocks();
+                return o1.remainingCpuClocks() + o1.totalRanCpuClocks() - o2.remainingCpuClocks() + o2.totalRanCpuClocks();
             }
         };
     }
@@ -109,8 +111,8 @@ public class Comparators {
                 if (o1.totalRanCpuClocks() > o2.totalRanCpuClocks()) //solo ocurre en expel evaluation
                     return 0; //evita expulsion
                 return
-                        ((Clock.getInstance().getClock() - o1.getLastClock() +  o1.remainingCpuClocks() + o1.totalRanCpuClocks())/(o1.remainingCpuClocks() + o1.totalRanCpuClocks()))
-                        - ((Clock.getInstance().getClock() - o2.getLastClock() +  o2.remainingCpuClocks() + o2.totalRanCpuClocks())/(o2.remainingCpuClocks() + o2.totalRanCpuClocks()));
+                        ((Clock.getInstance().getClock() - o2.getLastClock() +  o2.remainingCpuClocks() + o2.totalRanCpuClocks())/(o2.remainingCpuClocks() + o2.totalRanCpuClocks()))
+                        - ((Clock.getInstance().getClock() - o1.getLastClock() +  o1.remainingCpuClocks() + o1.totalRanCpuClocks())/(o1.remainingCpuClocks() + o1.totalRanCpuClocks()));
             }
         };
     }

@@ -60,7 +60,7 @@ public class Process implements Executable{
 		}
 
 		// If something to ran but expel
-		if ( !this.kltQueue.isEmpty() &&  this.kltQueue.comparator().compare(this.klt, this.kltQueue.peek()) < 0 && this.klt.getUlt().nextJobType() == Job.Type.CPU ) {
+		if ( !this.kltQueue.isEmpty() &&  this.kltQueue.comparator().compare(this.klt, this.kltQueue.peek()) > 0 && this.klt.getUlt().nextJobType() == Job.Type.CPU ) {
 			this.klt.setExecutionTime(0);
 			this.kltQueue.add(this.klt);
 			this.klt = this.kltQueue.poll();
@@ -96,7 +96,7 @@ public class Process implements Executable{
         }
 
         if ((this.aCmp.isExpulsive() || this.klt.getExecutionTime() == 0) && !this.kltQueue.isEmpty()) {
-            if (this.aCmp.getCmp().compare(this.klt, this.kltQueue.peek()) < 0) {
+            if (this.aCmp.getCmp().compare(this.klt, this.kltQueue.peek()) > 0) {
                 this.kltQueue.add(this.klt);
                 this.klt = this.kltQueue.poll();
             }
@@ -114,6 +114,8 @@ public class Process implements Executable{
 
 	public Integer remainingCpuClocks(){
 		int counter = 0;
+		if (this.klt != null)
+		    counter += this.klt.remainingCpuClocks();
 		for( Klt each : kltQueue){
 			counter += each.remainingCpuClocks();
 		}
@@ -122,6 +124,8 @@ public class Process implements Executable{
 
 	public Integer totalRanCpuClocks(){
 		int counter = 0;
+        if (this.klt != null)
+            counter += this.klt.totalRanCpuClocks();
 		for( Klt each : kltQueue){
 			counter += each.totalRanCpuClocks();
 		}
@@ -129,7 +133,9 @@ public class Process implements Executable{
 	}
 
 	public Integer getLastClock() {
-		Klt latest = kltQueue.peek();
+		Klt latest = this.klt;
+		if (latest == null)
+            kltQueue.peek();
 		for( Klt each : kltQueue){
 			if (each.getLastClock() > latest.getLastClock())
 				latest = each;
